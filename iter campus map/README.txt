@@ -2,7 +2,7 @@ ITER Campus Management Map
 
 Run index.html using VS Code Live Server.
 
-Key points in this revision:
+Key points in this revision (Version 6):
 - The supplied template-map.jpeg is still the exact campus base geometry.
 - No extra road is drawn around the field.
 - The requested top-down futsal image is used directly inside the original green-field footprint.
