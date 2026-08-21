@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MaintainX - Smart Maintenance</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header class="header">
+
+    <div class="logo-area">
+        <div class="logo-icon">
+            <i class="fa-solid fa-gear"></i>
+        </div>
+
+        <div>
+            <h1>Maintain<span>X</span></h1>
+            <p>Keep Every Space. Always in Top Shape.</p>
+        </div>
+    </div>
+
+    <nav>
+        <a class="active" href="#">
+            <i class="fa-solid fa-house"></i>
+            Home
+        </a>
+
+        <a href="#">
+            <i class="fa-solid fa-building"></i>
+            Buildings
+        </a>
+
+        <a href="./Map/index.html">
+            <i class="fa-solid fa-location-dot"></i>
+            Map
+        </a>
+
+        <a href="#">
+            <i class="fa-solid fa-chart-column"></i>
+            Reports
+        </a>
+
+        <a href="#">
+            <i class="fa-solid fa-table-cells-large"></i>
+            Dashboard
+        </a>
+
+        <a href="#">
+            <i class="fa-solid fa-circle-info"></i>
+            About
+        </a>
+    </nav>
+
+    <div class="header-right">
+
+        <button class="theme-btn">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+
+        <button class="notification">
+            <i class="fa-regular fa-bell"></i>
+            <span>3</span>
+        </button>
+
+        <button class="login-btn">
+            <i class="fa-solid fa-user"></i>
+            Login
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main-container">
+
+    <!-- LEFT CONTENT -->
+
+    <section class="left-content">
+
+        <!-- HERO -->
+
+        <section class="hero">
+
+            <div class="hero-text">
+
+                <h2>
+                    Find. Track. Fix.<br>
+                    Keep Everything<br>
+                    <span>Well Maintained.</span>
+                </h2>
+
+                <p>
+                    MaintainX helps you manage maintenance of buildings,
+                    plan your tasks, and ensure a safe, clean and efficient
+                    environment for everyone.
+                </p>
+
+                <div class="search-box">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="text"
+                        placeholder="Search for a building, e.g., Hospital, Library..."
+                    >
+
+                    <button>Search</button>
+
+                </div>
+
+                <div class="hero-buttons">
+
+                    <button class="primary-btn">
+                        <i class="fa-solid fa-building"></i>
+                        Explore Buildings
+                    </button>
+
+                    <button class="secondary-btn">
+                        <i class="fa-solid fa-location-dot"></i>
+                        View on Map
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- HERO ILLUSTRATION -->
+
+            <div class="hero-image">
+
+                <div class="city">
+
+                    <div class="building b1"></div>
+                    <div class="building b2"></div>
+                    <div class="building b3"></div>
+                    <div class="building b4"></div>
+
+                </div>
+
+                <div class="worker">
+
+                    <div class="worker-head"></div>
+
+                    <div class="worker-body">
+                        <i class="fa-solid fa-wrench"></i>
+                    </div>
+
+                    <div class="worker-leg left-leg"></div>
+                    <div class="worker-leg right-leg"></div>
+
+                </div>
+
+                <div class="clipboard">
+                    <h4>MAINTENANCE</h4>
+
+                    <p>☑ Inspection</p>
+                    <p>☑ Repair</p>
+                    <p>☑ Cleaning</p>
+                    <p>☐ Replacement</p>
+                </div>
+
+                <div class="warning">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- QUICK FEATURES -->
+
+        <section class="features">
+
+            <div class="feature-card blue">
+
+                <div class="feature-icon">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                </div>
+
+                <div>
+                    <h3>Maintenance Requests</h3>
+                    <p>Submit and track maintenance requests</p>
+                </div>
+
+            </div>
+
+
+            <div class="feature-card green">
+
+                <div class="feature-icon">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                </div>
+
+                <div>
+                    <h3>Work Orders</h3>
+                    <p>Manage and assign maintenance tasks</p>
+                </div>
+
+            </div>
+
+
+            <div class="feature-card orange">
+
+                <div class="feature-icon">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </div>
+
+                <div>
+                    <h3>Preventive Maintenance</h3>
+                    <p>Schedule and track routine maintenance</p>
+                </div>
+
+            </div>
+
+
+            <div class="feature-card purple">
+
+                <div class="feature-icon">
+                    <i class="fa-solid fa-box"></i>
+                </div>
+
+                <div>
+                    <h3>Inventory Management</h3>
+                    <p>Track tools, parts and stock</p>
+                </div>
+
+            </div>
+
+
+            <div class="feature-card pink">
+
+                <div class="feature-icon">
+                    <i class="fa-solid fa-chart-column"></i>
+                </div>
+
+                <div>
+                    <h3>Reports & Analytics</h3>
+                    <p>Insights to improve maintenance</p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FEATURED BUILDINGS -->
+
+        <section class="buildings-section">
+
+            <div class="section-heading">
+                <h2>Featured Buildings</h2>
+                <a href="#">View All</a>
+            </div>
+
+
+            <div class="building-cards">
+
+                <!-- CARD 1 -->
+
+                <div class="building-card">
+
+                    <div class="building-photo hospital">
+                        <span>CITY HOSPITAL</span>
+                    </div>
+
+                    <div class="building-info">
+
+                        <div class="title-row">
+                            <h3>City Hospital</h3>
+                            <strong class="score green-score">88/100</strong>
+                        </div>
+
+                        <p>MG Road, Bangalore</p>
+
+                        <div class="status-icons">
+                            <i class="fa-solid fa-wheelchair"></i>
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+
+                        <div class="checks">
+                            <span>✓</span>
+                            <span>✓</span>
+                            <span>✓</span>
+                            <span>✓</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CARD 2 -->
+
+                <div class="building-card">
+
+                    <div class="building-photo library">
+                        <span>CENTRAL LIBRARY</span>
+                    </div>
+
+                    <div class="building-info">
+
+                        <div class="title-row">
+                            <h3>Central Library</h3>
+                            <strong class="score green-score">76/100</strong>
+                        </div>
+
+                        <p>Church Street, Bangalore</p>
+
+                        <div class="status-icons">
+                            <i class="fa-solid fa-wheelchair"></i>
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+
+                        <div class="checks">
+                            <span>✓</span>
+                            <span>✓</span>
+                            <span>✓</span>
+                            <span>✓</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CARD 3 -->
+
+                <div class="building-card">
+
+                    <div class="building-photo passport">
+                        <span>PASSPORT SEVA KENDRA</span>
+                    </div>
+
+                    <div class="building-info">
+
+                        <div class="title-row">
+                            <h3>Passport Seva Kendra</h3>
+                            <strong class="score orange-score">65/100</strong>
+                        </div>
+
+                        <p>Koramangala, Bangalore</p>
+
+                        <div class="status-icons">
+                            <i class="fa-solid fa-wheelchair"></i>
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+
+                        <div class="checks">
+                            <span>✓</span>
+                            <span>!</span>
+                            <span>×</span>
+                            <span>✓</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CARD 4 -->
+
+                <div class="building-card">
+
+                    <div class="building-photo townhall">
+                        <span>TOWN HALL</span>
+                    </div>
+
+                    <div class="building-info">
+
+                        <div class="title-row">
+                            <h3>Town Hall</h3>
+                            <strong class="score green-score">82/100</strong>
+                        </div>
+
+                        <p>Vasanth Nagar, Bangalore</p>
+
+                        <div class="status-icons">
+                            <i class="fa-solid fa-wheelchair"></i>
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+
+                        <div class="checks">
+                            <span>✓</span>
+                            <span>✓</span>
+                            <span>✓</span>
+                            <span>✓</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </section>
+
+
+    <!-- ================= RIGHT SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <!-- BUILDING SAFETY -->
+
+        <div class="safety-card">
+
+            <div class="safety-illustration">
+
+                <div class="mini-building">
+                    <i class="fa-solid fa-building"></i>
+                </div>
+
+                <div class="shield">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+
+                <div class="spark">✦</div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RECENT ISSUES -->
+
+        <div class="issues-card">
+
+            <div class="issue-heading">
+                <h2>Recent Issues</h2>
+                <a href="#">View All</a>
+            </div>
+
+
+            <div class="issue">
+
+                <div class="issue-img lift">
+                    <i class="fa-solid fa-elevator"></i>
+                </div>
+
+                <div class="issue-info">
+                    <h3>Lift not working</h3>
+                    <p>City Hospital</p>
+                </div>
+
+                <div>
+                    <small>2h ago</small>
+                    <label class="open">Open</label>
+                </div>
+
+            </div>
+
+
+            <div class="issue">
+
+                <div class="issue-img water">
+                    <i class="fa-solid fa-droplet"></i>
+                </div>
+
+                <div class="issue-info">
+                    <h3>Water leakage</h3>
+                    <p>Central Library</p>
+                </div>
+
+                <div>
+                    <small>3h ago</small>
+                    <label class="progress">In Progress</label>
+                </div>
+
+            </div>
+
+
+            <div class="issue">
+
+                <div class="issue-img light">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </div>
+
+                <div class="issue-info">
+                    <h3>Lighting issue in hallway</h3>
+                    <p>Town Hall</p>
+                </div>
+
+                <div>
+                    <small>5h ago</small>
+                    <label class="progress">In Progress</label>
+                </div>
+
+            </div>
+
+
+            <div class="issue">
+
+                <div class="issue-img ac">
+                    <i class="fa-solid fa-snowflake"></i>
+                </div>
+
+                <div class="issue-info">
+                    <h3>AC not cooling</h3>
+                    <p>Passport Seva Kendra</p>
+                </div>
+
+                <div>
+                    <small>1d ago</small>
+                    <label class="resolved">Resolved</label>
+                </div>
+
+            </div>
+
+
+            <button class="report-btn">
+                <i class="fa-solid fa-plus"></i>
+                Report an Issue
+            </button>
+
+        </div>
+
+    </aside>
+
+</main>
+
+
+<!-- ================= BOTTOM BENEFITS ================= -->
+
+<section class="benefits">
+
+    <div class="benefit">
+
+        <div class="benefit-icon purple-icon">
+            <i class="fa-solid fa-bolt"></i>
+        </div>
+
+        <div>
+            <h3>Smart Maintenance</h3>
+            <p>Automate tasks and reduce downtime.</p>
+        </div>
+
+    </div>
+
+
+    <div class="benefit">
+
+        <div class="benefit-icon green-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <div>
+            <h3>Stay Compliant</h3>
+            <p>Ensure safety and regulatory compliance.</p>
+        </div>
+
+    </div>
+
+
+    <div class="benefit">
+
+        <div class="benefit-icon orange-icon">
+            <i class="fa-solid fa-chart-simple"></i>
+        </div>
+
+        <div>
+            <h3>Data-Driven Decisions</h3>
+            <p>Use insights to improve efficiency and performance.</p>
+        </div>
+
+    </div>
+
+
+    <div class="benefit">
+
+        <div class="benefit-icon blue-icon">
+            <i class="fa-solid fa-users"></i>
+        </div>
+
+        <div>
+            <h3>Built for Everyone</h3>
+            <p>Empowering teams to keep spaces running smoothly.</p>
+        </div>
+
+    </div>
+
+</section>
+
+
+</body>
+</html>
