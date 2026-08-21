@@ -1,0 +1,134 @@
+<svg id="campusMap" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1024 1024" preserveAspectRatio="xMidYMid meet" role="img" aria-label="ITER campus interactive map">
+            <defs>
+              <linearGradient id="financeFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b8061"/><stop offset="1" stop-color="#39ba94"/></linearGradient>
+              <linearGradient id="adminFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6576d2"/><stop offset="1" stop-color="#9d8cdf"/></linearGradient>
+              <linearGradient id="aFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2ae46"/><stop offset="1" stop-color="#edc774"/></linearGradient>
+              <linearGradient id="bFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dc755b"/><stop offset="1" stop-color="#f0a67e"/></linearGradient>
+              <linearGradient id="bansuriFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7163bb"/><stop offset="1" stop-color="#a88cdf"/></linearGradient>
+              <linearGradient id="cFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6dbfaa"/><stop offset="1" stop-color="#a8dacd"/></linearGradient>
+              <linearGradient id="libraryFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#79a9dc"/><stop offset="1" stop-color="#b1cce9"/></linearGradient>
+              <linearGradient id="dFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d9819e"/><stop offset="1" stop-color="#efb0c0"/></linearGradient>
+              <linearGradient id="scFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9475c8"/><stop offset="1" stop-color="#c2a7e0"/></linearGradient>
+              <linearGradient id="fFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#67b5c8"/><stop offset="1" stop-color="#a6d9e2"/></linearGradient>
+              <linearGradient id="eFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#45a481"/><stop offset="1" stop-color="#92cfbb"/></linearGradient>
+              <clipPath id="futsalClip"><polygon points="403,212 545,264 508,365 367,313"/></clipPath>
+              <style>
+                .map-block{cursor:pointer;outline:none}
+                .map-block .fill{stroke:#01714e;stroke-width:3;stroke-opacity:.97;fill-opacity:1;pointer-events:none;vector-effect:non-scaling-stroke}
+                .map-block .inner-outline{fill:none;stroke:#f9fffc;stroke-width:3;stroke-opacity:.9;pointer-events:none;vector-effect:non-scaling-stroke}
+                .map-block .hit{fill:#fff;fill-opacity:0;stroke:none;pointer-events:all}
+                .map-block:hover .fill,.map-block:focus .fill{stroke:#005d40;stroke-width:4;filter:drop-shadow(0 7px 12px rgba(1,113,78,.22))}
+                .nonclick{pointer-events:none}
+                .block-label{fill:#1d2925;font-family:Arial,Helvetica,sans-serif;font-size:18px;font-weight:700;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+                .block-label.small{font-size:14px}
+                .block-label.tiny{font-size:12px}
+              </style>
+            </defs>
+
+            <!-- Exact supplied campus/road geometry. No additional roads are drawn. -->
+            <image x="0" y="0" width="1024" height="1024" preserveAspectRatio="none" href="template-map.jpeg" xlink:href="template-map.jpeg" />
+
+            <!-- Finance Department -->
+            <g class="map-block" tabindex="0" role="button" aria-label="Finance Department" data-block="Finance Department">
+              <path class="fill" d="M179 22 L115 34 L134 120 L197 108 Z" fill="url(#financeFill)"/>
+              <path class="inner-outline" d="M172 33 L124 42 L141 110 L188 100 Z"/>
+              <path class="hit" d="M173 34 L124 43 L141 109 L188 100 Z"/>
+              <text class="block-label tiny" x="155" y="72" transform="rotate(78 155 72)">Finance</text>
+              <text class="block-label tiny" x="159" y="89" transform="rotate(78 159 89)">Department</text>
+            </g>
+
+            <!-- Administrative Block: inset within the supplied irregular outline. -->
+            <g class="map-block" tabindex="0" role="button" aria-label="Administrative Block" data-block="Administrative Block">
+              <path class="fill" d="M170 161 L293 86 L318 131 L237 159 L234 187 L200 212 Z" fill="url(#adminFill)"/>
+              <path class="inner-outline" d="M183 161 L285 99 L305 129 L231 155 L228 178 L202 198 Z"/>
+              <path class="hit" d="M184 162 L284 99 L304 130 L231 157 L229 177 L202 198 Z"/>
+              <text class="block-label small" x="231" y="148" transform="rotate(-32 231 148)">Administrative</text>
+              <text class="block-label small" x="225" y="165" transform="rotate(-32 225 165)">Block</text>
+            </g>
+
+            <!-- A Block: inset within the supplied quadrilateral. -->
+            <g class="map-block" tabindex="0" role="button" aria-label="A Block" data-block="A Block">
+              <path class="fill" d="M201 223 L236 196 L271 263 L232 294 Z" fill="url(#aFill)"/>
+              <path class="inner-outline" d="M204 230 L232 207 L262 260 L233 284 Z"/>
+              <path class="hit" d="M205 231 L232 207 L262 260 L233 284 Z"/>
+              <text class="block-label tiny" x="235" y="257" transform="rotate(-33 235 257)">A Block</text>
+            </g>
+
+            <!-- B Block: curved shape and inset hit-area follow the supplied outline. -->
+            <g class="map-block" tabindex="0" role="button" aria-label="B Block" data-block="B Block">
+              <path class="fill" d="M242 166 L306 148 Q322 148 334 215 Q328 245 306 269 L282 262 L241 189 Z" fill="url(#bFill)"/>
+              <path class="inner-outline" d="M253 171 L303 157 Q313 158 324 215 Q319 239 303 257 L289 253 L253 188 Z"/>
+              <path class="hit" d="M253 172 L302 158 Q313 158 323 215 Q318 236 303 255 L290 251 L253 190 Z"/>
+              <text class="block-label tiny" x="302" y="213" transform="rotate(82 302 213)">B Block</text>
+            </g>
+
+            <!-- Bansuri Bhawan -->
+            <g class="map-block" tabindex="0" role="button" aria-label="Bansuri Bhawan" data-block="Bansuri Bhawan">
+              <path class="fill" d="M600 171 L664 188 L613 386 L550 369 Z" fill="url(#bansuriFill)"/>
+              <path class="inner-outline" d="M608 182 L653 194 L606 374 L560 362 Z"/>
+              <path class="hit" d="M608 182 L653 194 L606 374 L560 362 Z"/>
+              <text class="block-label small" x="607" y="285" transform="rotate(104 607 285)">Bansuri Bhawan</text>
+            </g>
+
+            <!-- C Block -->
+            <g class="map-block" tabindex="0" role="button" aria-label="C Block" data-block="C Block">
+              <path class="fill" d="M294 352 L617 415 L600 510 L276 448 Z" fill="url(#cFill)"/>
+              <path class="inner-outline" d="M306 365 L602 423 L588 497 L290 440 Z"/>
+              <path class="hit" d="M306 365 L602 423 L588 497 L290 440 Z"/>
+              <text class="block-label" x="454" y="429" transform="rotate(11 454 429)">C Block</text>
+            </g>
+
+            <!-- Library -->
+            <g class="map-block" tabindex="0" role="button" aria-label="Library" data-block="Library">
+              <path class="fill" d="M168 514 L50 556 L124 755 L238 711 Z" fill="url(#libraryFill)"/>
+              <path class="inner-outline" d="M160 531 L65 566 L130 740 L225 704 Z"/>
+              <path class="hit" d="M160 531 L65 566 L130 740 L225 704 Z"/>
+              <text class="block-label" x="147" y="633" transform="rotate(-20 147 633)">Library</text>
+            </g>
+
+            <!-- D Block -->
+            <g class="map-block" tabindex="0" role="button" aria-label="D Block" data-block="D Block">
+              <path class="fill" d="M249 509 L350 509 L350 685 L249 685 Z" fill="url(#dFill)"/>
+              <path class="inner-outline" d="M260 520 L339 520 L339 674 L260 674 Z"/>
+              <path class="hit" d="M260 520 L339 520 L339 674 L260 674 Z"/>
+              <text class="block-label" x="300" y="597">D Block</text>
+            </g>
+
+            <!-- SC Block -->
+            <g class="map-block" tabindex="0" role="button" aria-label="SC Block" data-block="SC Block">
+              <path class="fill" d="M438 522 L571 544 L560 620 L428 598 Z" fill="url(#scFill)"/>
+              <path class="inner-outline" d="M448 532 L558 550 L550 610 L438 591 Z"/>
+              <path class="hit" d="M448 532 L558 550 L550 610 L438 591 Z"/>
+              <text class="block-label small" x="499" y="575" transform="rotate(9 499 575)">SC Block</text>
+            </g>
+
+            <!-- F Block -->
+            <g class="map-block" tabindex="0" role="button" aria-label="F Block" data-block="F Block">
+              <path class="fill" d="M637 510 L762 510 L761 659 L638 659 Z" fill="url(#fFill)"/>
+              <path class="inner-outline" d="M648 520 L751 520 L750 649 L648 649 Z"/>
+              <path class="hit" d="M648 520 L751 520 L750 649 L648 649 Z"/>
+              <text class="block-label" x="700" y="583">F Block</text>
+            </g>
+
+            <!-- E Block -->
+            <g class="map-block" tabindex="0" role="button" aria-label="E Block" data-block="E Block">
+              <path class="fill" d="M421 628 L760 760 L692 949 L346 815 Z" fill="url(#eFill)"/>
+              <path class="inner-outline" d="M435 644 L745 765 L684 932 L362 808 Z"/>
+              <path class="hit" d="M435 644 L745 765 L684 932 L362 808 Z"/>
+              <text class="block-label" x="548" y="804" transform="rotate(22 548 804)">E Block</text>
+            </g>
+
+            <!-- Food Court is visible and intentionally not clickable. -->
+            <g class="nonclick" aria-label="Food Court">
+              <path d="M954 570 L803 622 L821 671 L969 618 Z" fill="#c89a62" fill-opacity=".94" stroke="#816044" stroke-width="3"/>
+              <path d="M935 585 L817 626 L829 657 L955 613 Z" fill="none" stroke="#f7ead9" stroke-width="2.2" opacity=".95"/>
+              <text class="block-label tiny" x="888" y="622" transform="rotate(-19 888 622)">Food Court</text>
+            </g>
+
+            <!-- Exact user-supplied top-down field image mapped into the original green rectangle. -->
+            <g class="nonclick" aria-label="Futsal court">
+              <image x="0" y="0" width="887" height="603" preserveAspectRatio="none"
+                     transform="matrix(0.158963 0.05637 -0.06136 0.164179 404 214)"
+                     clip-path="url(#futsalClip)" href="futsal-field.jpg" xlink:href="futsal-field.jpg" />
+            </g>
+          </svg>
