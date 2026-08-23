@@ -614,7 +614,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
 
-  <script>
+ <script>
     const firebaseConfig = {
       apiKey: "AIzaSyBScWh3x3OSAopqaIlgoDrAJYq_UjywfGA",
       authDomain: "sih-s37.firebaseapp.com",
@@ -629,14 +629,43 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // 1. Fetch live campus buildings & accessibility data
-    db.collection("buildings").doc("all_buildings").onSnapshot((doc) => {
-      if (!doc.exists) return;
-      const buildings = doc.data().buildings_list || [];
-      console.log("Loaded Campus Buildings:", buildings);
-    });
+    // 1. Real-Time Complaints Feed (Replaces static placeholder cards)
+    db.collection("complaints")
+      .orderBy("timestamp", "desc")
+      .limit(4)
+      .onSnapshot((snapshot) => {
+        const issuesCard = document.querySelector(".issues-card");
+        if (!issuesCard) return;
+        const reportBtn = issuesCard.querySelector(".report-btn");
 
-    // 2. Function to submit reports/complaints to Firestore
+        // Clear hardcoded static issues
+        issuesCard.querySelectorAll(".issue").forEach((el) => el.remove());
+
+        // Render live Firestore complaints
+        snapshot.forEach((doc) => {
+          const c = doc.data();
+          const statusClass = c.status === "resolved" ? "resolved" : "open";
+
+          const issueDiv = document.createElement("div");
+          issueDiv.className = "issue";
+          issueDiv.innerHTML = `
+            <div class="issue-img lift">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div class="issue-info">
+              <h3>${c.description || c.issueType}</h3>
+              <p>${c.buildingname || c.buildingcode}</p>
+            </div>
+            <div>
+              <small>Live</small>
+              <label class="${statusClass}">${c.status || "Open"}</label>
+            </div>
+          `;
+          issuesCard.insertBefore(issueDiv, reportBtn);
+        });
+      });
+
+    // 2. Function to Submit Complaints to Firestore
     function submitReport(buildingCode, buildingName, issueTitle, description) {
       return db.collection("complaints").add({
         buildingcode: buildingCode,
@@ -648,7 +677,7 @@
       });
     }
 
-    // Connect the "Report an Issue" button to Firestore
+    // 3. Connect the "+ Report an Issue" Button
     document.querySelector(".report-btn")?.addEventListener("click", () => {
       const issue = prompt("Enter the issue description:");
       if (issue) {
