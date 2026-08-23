@@ -614,7 +614,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
 
- <script>
+<script>
     const firebaseConfig = {
       apiKey: "AIzaSyBScWh3x3OSAopqaIlgoDrAJYq_UjywfGA",
       authDomain: "sih-s37.firebaseapp.com",
@@ -629,7 +629,15 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // 1. Real-Time Complaints Feed (Replaces static placeholder cards)
+    // 1. Helper to format standard building codes (e.g. "SC-Block" -> "BLK-SC")
+    function formatBuildingCode(name) {
+      if (!name) return "BLK-GEN";
+      const clean = name.trim().toUpperCase();
+      const code = clean.replace(/BLOCK/g, '').replace(/[^A-Z0-9]/g, '');
+      return `BLK-${code || clean.substring(0, 3)}`;
+    }
+
+    // 2. Real-Time Complaints Feed
     db.collection("complaints")
       .orderBy("timestamp", "desc")
       .limit(4)
@@ -638,7 +646,7 @@
         if (!issuesCard) return;
         const reportBtn = issuesCard.querySelector(".report-btn");
 
-        // Clear hardcoded static issues
+        // Clear mock issues
         issuesCard.querySelectorAll(".issue").forEach((el) => el.remove());
 
         // Render live Firestore complaints
@@ -654,7 +662,7 @@
             </div>
             <div class="issue-info">
               <h3>${c.description || c.issueType}</h3>
-              <p>${c.buildingname || c.buildingcode}</p>
+              <p>${c.buildingname || c.buildingcode} (${c.buildingcode || ''})</p>
             </div>
             <div>
               <small>Live</small>
@@ -665,7 +673,7 @@
         });
       });
 
-    // 2. Function to Submit Complaints to Firestore
+    // 3. Submit Complaint Function
     function submitReport(buildingCode, buildingName, issueTitle, description) {
       return db.collection("complaints").add({
         buildingcode: buildingCode,
@@ -676,28 +684,20 @@
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       });
     }
-    // Helper to convert building name to code (e.g., "E-Block" -> "BLK-E")
-    function formatBuildingCode(name) {
-      const clean = name.trim().toUpperCase();
-      if (clean.includes("BLOCK") || clean.includes("-")) {
-        const letter = clean.replace(/[^A-Z0-9]/g, '').replace('BLOCK', '');
-        return `BLK-${letter || 'A'}`;
+
+    // 4. Connect "+ Report an Issue" Button
+    document.querySelector(".report-btn")?.addEventListener("click", () => {
+      const building = prompt("Enter Building / Block Name (e.g., SC-Block, E-Block, Library):", "SC-Block");
+      if (!building) return;
+
+      const issue = prompt(`Enter the issue description for ${building}:`);
+      if (issue) {
+        const bCode = formatBuildingCode(building);
+        submitReport(bCode, building, "Maintenance Request", issue)
+          .then(() => alert(`Report for ${building} (${bCode}) successfully saved!`))
+          .catch((err) => alert("Error: " + err.message));
       }
-      return `BLK-${clean.substring(0, 3)}`;
-    }
-
-// 3. Connect the "+ Report an Issue" Button (Dynamic Block Selection)
-document.querySelector(".report-btn")?.addEventListener("click", () => {
-  const building = prompt("Enter Building / Block Name (e.g. E-Block, A-Block, C-Block, Library):", "E-Block");
-  if (!building) return;
-
-  const issue = prompt(`Enter the issue description for ${building}:`);
-  if (issue) {
-    submitReport(building.toUpperCase(), building, "Maintenance Request", issue)
-      .then(() => alert(`Report for ${building} successfully saved to Firestore!`))
-      .catch((err) => alert("Error: " + err.message));
-  }
-});
+    });
   </script>
 </body>
 </html>
