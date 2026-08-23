@@ -610,6 +610,53 @@
 
 </section>
 
+<!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
 
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBScWh3x3OSAopqaIlgoDrAJYq_UjywfGA",
+      authDomain: "sih-s37.firebaseapp.com",
+      projectId: "sih-s37",
+      storageBucket: "sih-s37.firebasestorage.app",
+      messagingSenderId: "754412814947",
+      appId: "1:754412814947:web:dc3b4111d72769adfc2e56",
+      measurementId: "G-DHTBNTK4XW"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // 1. Fetch live campus buildings & accessibility data
+    db.collection("buildings").doc("all_buildings").onSnapshot((doc) => {
+      if (!doc.exists) return;
+      const buildings = doc.data().buildings_list || [];
+      console.log("Loaded Campus Buildings:", buildings);
+    });
+
+    // 2. Function to submit reports/complaints to Firestore
+    function submitReport(buildingCode, buildingName, issueTitle, description) {
+      return db.collection("complaints").add({
+        buildingcode: buildingCode,
+        buildingname: buildingName,
+        issueType: issueTitle,
+        description: description,
+        status: "pending",
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+
+    // Connect the "Report an Issue" button to Firestore
+    document.querySelector(".report-btn")?.addEventListener("click", () => {
+      const issue = prompt("Enter the issue description:");
+      if (issue) {
+        submitReport("BLK-A", "A-Block", "Maintenance Request", issue)
+          .then(() => alert("Report successfully saved to Firestore!"))
+          .catch((err) => alert("Error: " + err.message));
+      }
+    });
+  </script>
 </body>
 </html>
