@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Create Account - MaintainX</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body class="login-page">
+
+
+<div class="login-wrapper">
+
+    <div class="login-card">
+
+
+        <!-- LOGO -->
+
+        <div class="login-logo">
+
+            <div class="login-logo-icon">
+                <i class="fa-solid fa-gear"></i>
+            </div>
+
+            <div>
+
+                <h1>
+                    Maintain<span>X</span>
+                </h1>
+
+                <p>
+                    Smart Maintenance
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- HEADING -->
+
+        <div class="login-heading">
+
+            <h2>
+                Create Account
+            </h2>
+
+            <p>
+                Join MaintainX today
+            </p>
+
+        </div>
+
+
+        <!-- SIGNUP FORM -->
+
+        <form id="signupForm">
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label for="signupEmail">
+                    Email
+                </label>
+
+                <div class="input-wrapper">
+
+                    <i class="fa-regular fa-envelope"></i>
+
+                    <input
+                        type="email"
+                        id="signupEmail"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+                <label for="signupPassword">
+                    Password
+                </label>
+
+                <div class="input-wrapper">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <input
+                        type="password"
+                        id="signupPassword"
+                        placeholder="Create a password"
+                        minlength="6"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        id="toggleSignupPassword"
+                        class="password-toggle"
+                    >
+
+                        <i class="fa-regular fa-eye"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- CONFIRM PASSWORD -->
+
+            <div class="form-group">
+
+                <label for="confirmPassword">
+                    Confirm Password
+                </label>
+
+                <div class="input-wrapper">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        placeholder="Confirm your password"
+                        minlength="6"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- ERROR -->
+
+            <p
+                id="signupError"
+                class="login-error"
+            ></p>
+
+
+            <!-- BUTTON -->
+
+            <button
+                type="submit"
+                class="submit-login"
+            >
+
+                <span>
+                    Create Account
+                </span>
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </button>
+
+
+        </form>
+
+
+        <!-- LOGIN LINK -->
+
+        <p class="signup-text">
+
+            Already have an account?
+
+            <a href="login.html">
+                Login
+            </a>
+
+        </p>
+
+
+        <!-- HOME -->
+
+        <a
+            href="index.html"
+            class="back-home"
+        >
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to home
+
+        </a>
+
+
+    </div>
+
+</div>
+
+
+<!-- FIREBASE / AUTH -->
+
+<script
+    type="module"
+    src="auth.js"
+></script>
+
+
+</body>
+
+</html>
