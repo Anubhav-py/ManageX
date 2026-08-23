@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#01714e">
+
+    <title>Report an Issue | ITER Campus Management</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f3f7f5;
+            color: #1c2824;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* =========================
+           TOP BAR
+        ========================= */
+
+        .topbar {
+            height: 74px;
+            background: white;
+            border-bottom: 1px solid #dfe8e4;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 42px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-mark {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 11px;
+
+            background: #e7f4ef;
+            color: #01714e;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: 800;
+            font-size: 19px;
+        }
+
+        .brand-title {
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .brand-subtitle {
+            margin-top: 3px;
+
+            font-size: 10px;
+            color: #7a8983;
+        }
+
+        .back-button {
+            border: 1px solid #d8e3de;
+            background: white;
+
+            color: #01714e;
+
+            padding: 10px 15px;
+
+            border-radius: 8px;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background: #eaf5f0;
+        }
+
+
+        /* =========================
+           PAGE
+        ========================= */
+
+        .page {
+            width: min(1050px, calc(100% - 40px));
+            margin: 42px auto 70px;
+        }
+
+        .modal-kicker {
+            color: #01714e;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 1.4px;
+
+            margin-bottom: 8px;
+        }
+
+        .page-title {
+            margin: 0;
+
+            font-size: 32px;
+            letter-spacing: -0.7px;
+        }
+
+        .page-subtitle {
+            margin-top: 7px;
+
+            color: #718079;
+
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           MAIN CARD
+        ========================= */
+
+        .report-card {
+            margin-top: 27px;
+
+            background: white;
+
+            border: 1px solid #dce7e2;
+
+            border-radius: 16px;
+
+            overflow: hidden;
+
+            box-shadow: 0 10px 35px rgba(20, 55, 42, 0.06);
+        }
+
+
+        /* =========================
+           CARD HEADER
+        ========================= */
+
+        .card-head {
+            padding: 25px 29px;
+
+            border-bottom: 1px solid #e3ebe7;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-head h2 {
+            margin: 0;
+
+            font-size: 21px;
+        }
+
+        .card-head p {
+            margin: 6px 0 0;
+
+            color: #77857f;
+
+            font-size: 11px;
+        }
+
+        .report-badge {
+            width: 52px;
+            height: 52px;
+
+            border-radius: 12px;
+
+            background: #e7f4ef;
+            color: #01714e;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .content {
+            padding: 26px 29px 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 12px;
+
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .section-heading span {
+            color: #1c2824;
+        }
+
+        .section-heading small {
+            color: #89958f;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+
+        /* =========================
+           LOCATION / BLOCK
+        ========================= */
+
+        .location-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 11px;
+        }
+
+        .location-card {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #dce6e1;
+
+            border-radius: 10px;
+
+            padding: 15px;
+
+            background: white;
+
+            cursor: pointer;
+
+            transition: 0.18s;
+        }
+
+        .location-card::before,
+        .location-card::after {
+            content: none;
+            display: none;
+        }
+
+        .location-card:hover {
+            border-color: #01714e;
+
+            background: #f7fcfa;
+
+            transform: translateY(-1px);
+        }
+
+        .location-card.selected {
+            border-color: #01714e;
+
+            background: #eaf5f0;
+
+            box-shadow: inset 0 0 0 1px #01714e;
+        }
+
+        .location-icon {
+            width: 34px;
+            height: 34px;
+
+            border-radius: 8px;
+
+            background: #e7f4ef;
+            color: #01714e;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: 800;
+
+            margin-bottom: 10px;
+        }
+
+        .location-card strong {
+            display: block;
+
+            font-size: 12px;
+        }
+
+        .location-card small {
+            display: block;
+
+            margin-top: 4px;
+
+            color: #7c8984;
+
+            font-size: 9px;
+        }
+
+
+        /* =========================
+           FLOOR DIRECTORY
+        ========================= */
+
+        .floor-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(6, 1fr);
+
+            gap: 9px;
+        }
+
+        .floor-button {
+            min-height: 77px;
+
+            border: 1px solid #dce6e1;
+
+            background: white;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+
+            transition: 0.18s;
+        }
+
+        .floor-button:hover {
+            border-color: #01714e;
+
+            background: #f7fcfa;
+        }
+
+        .floor-button.selected {
+            border-color: #01714e;
+
+            background: #eaf5f0;
+
+            color: #01714e;
+        }
+
+        .floor-number {
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        .floor-name {
+            margin-top: 5px;
+
+            color: #7d8984;
+
+            font-size: 9px;
+        }
+
+
+        /* =========================
+           ISSUE TYPE
+        ========================= */
+
+        .issue-grid {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 10px;
+        }
+
+        .issue-card {
+            border: 1px solid #dce6e1;
+
+            background: white;
+
+            border-radius: 9px;
+
+            padding: 13px;
+
+            cursor: pointer;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            transition: 0.18s;
+        }
+
+        .issue-card:hover {
+            border-color: #01714e;
+        }
+
+        .issue-card.selected {
+            border-color: #01714e;
+
+            background: #eaf5f0;
+
+            color: #01714e;
+        }
+
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 17px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+
+            gap: 7px;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 10px;
+            font-weight: 800;
+
+            color: #36433d;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+
+            border: 1px solid #dce6e1;
+
+            border-radius: 8px;
+
+            padding: 11px 12px;
+
+            background: white;
+
+            color: #1c2824;
+
+            font-size: 11px;
+
+            outline: none;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #01714e;
+
+            box-shadow:
+                0 0 0 3px rgba(1, 113, 78, 0.08);
+        }
+
+        textarea {
+            min-height: 120px;
+
+            resize: vertical;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           PRIORITY
+        ========================= */
+
+        .priority-grid {
+            display: flex;
+
+            gap: 8px;
+        }
+
+        .priority {
+            border: 1px solid #dce6e1;
+
+            border-radius: 7px;
+
+            padding: 9px 15px;
+
+            background: white;
+
+            color: #65716c;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .priority.selected {
+            border-color: #01714e;
+
+            background: #eaf5f0;
+
+            color: #01714e;
+        }
+
+
+        /* =========================
+           PHOTO
+        ========================= */
+
+        .upload {
+            border: 1px dashed #cbd9d3;
+
+            border-radius: 9px;
+
+            min-height: 100px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-direction: column;
+
+            gap: 6px;
+
+            color: #7a8882;
+
+            cursor: pointer;
+        }
+
+        .upload:hover {
+            border-color: #01714e;
+
+            background: #fafdfb;
+        }
+
+        .upload-icon {
+            color: #01714e;
+
+            font-size: 20px;
+        }
+
+        .upload input {
+            display: none;
+        }
+
+
+        /* =========================
+           FOOTER ACTIONS
+        ========================= */
+
+        .actions {
+            padding: 18px 29px;
+
+            border-top: 1px solid #e3ebe7;
+
+            display: flex;
+            justify-content: flex-end;
+
+            gap: 9px;
+        }
+
+        .cancel,
+        .submit {
+            padding: 11px 19px;
+
+            border-radius: 8px;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            cursor: pointer;
+        }
+
+        .cancel {
+            border: 1px solid #dce6e1;
+
+            background: white;
+
+            color: #68756f;
+        }
+
+        .submit {
+            border: 1px solid #01714e;
+
+            background: #01714e;
+
+            color: white;
+        }
+
+        .submit:hover {
+            background: #005d40;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media(max-width: 750px) {
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .page {
+                width: calc(100% - 24px);
+            }
+
+            .location-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .floor-grid {
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+
+            .issue-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .field.full {
+                grid-column: auto;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <div class="brand-mark">
+            I
+        </div>
+
+        <div>
+
+            <div class="brand-title">
+                ITER Campus Management
+            </div>
+
+            <div class="brand-subtitle">
+                Interactive campus facilities management
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="back-button"
+        onclick="window.location.href='Map/index.html'"
+    >
+        ← Back to Map
+    </button>
+
+</header>
+
+
+<main class="page">
+
+    <div class="modal-kicker">
+        CAMPUS GRIEVANCE
+    </div>
+
+    <h1 class="page-title">
+        Report an Issue
+    </h1>
+
+    <p class="page-subtitle">
+        Select the location and facility where the issue was found,
+        then provide the details below.
+    </p>
+
+
+    <section class="report-card">
+
+
+        <!-- HEADER -->
+
+        <div class="card-head">
+
+            <div>
+
+                <h2>
+                    Issue location
+                </h2>
+
+                <p>
+                    Choose the affected building and floor.
+                </p>
+
+            </div>
+
+            <div class="report-badge">
+                !
+            </div>
+
+        </div>
+
+
+        <div class="content">
+
+
+            <!-- BUILDINGS -->
+
+            <section class="section">
+
+                <div class="section-heading">
+
+                    <span>
+                        Building
+                    </span>
+
+                    <small>
+                        Select one
+                    </small>
+
+                </div>
+
+
+                <div class="location-grid">
+
+                    <div class="location-card"
+                         data-building="A Block">
+
+                        <div class="location-icon">
+                            A
+                        </div>
+
+                        <strong>
+                            A Block
+                        </strong>
+
+                        <small>
+                            Academic block
+                        </small>
+
+                    </div>
+
+
+                    <div class="location-card"
+                         data-building="B Block">
+
+                        <div class="location-icon">
+                            B
+                        </div>
+
+                        <strong>
+                            B Block
+                        </strong>
+
+                        <small>
+                            Academic block
+                        </small>
+
+                    </div>
+
+
+                    <div class="location-card"
+                         data-building="C Block">
+
+                        <div class="location-icon">
+                            C
+                        </div>
+
+                        <strong>
+                            C Block
+                        </strong>
+
+                        <small>
+                            Academic block
+                        </small>
+
+                    </div>
+
+
+                    <div class="location-card"
+                         data-building="D Block">
+
+                        <div class="location-icon">
+                            D
+                        </div>
+
+                        <strong>
+                            D Block
+                        </strong>
+
+                        <small>
+                            Academic block
+                        </small>
+
+                    </div>
+
+
+                    <div class="location-card"
+                         data-building="E Block">
+
+                        <div class="location-icon">
+                            E
+                        </div>
+
+                        <strong>
+                            E Block
+                        </strong>
+
+                        <small>
+                            Academic block
+                        </small>
+
+                    </div>
+
+
+                    <div class="location-card"
+                         data-building="F Block">
+
+                        <div class="location-icon">
+                            F
+                        </div>
+
+                        <strong>
+                            F Block
+                        </strong>
+
+                        <small>
+                            Academic block
+                        </small>
+
+                    </div>
+
+
+                    <div class="location-card" data-building="Administrative Block">
+                        <div class="location-icon">AD</div>
+                        <strong>Administrative Block</strong>
+                        <small>Administration</small>
+                    </div>
+
+                    <div class="location-card" data-building="SC Block">
+                        <div class="location-icon">SC</div>
+                        <strong>SC Block</strong>
+                        <small>Academic block</small>
+                    </div>
+
+                    <div class="location-card" data-building="Basnuri Bhavan">
+                        <div class="location-icon">BB</div>
+                        <strong>Basnuri Bhavan</strong>
+                        <small>Campus facility</small>
+                    </div>
+
+                    <div class="location-card" data-building="Finance Department">
+                        <div class="location-icon">FD</div>
+                        <strong>Finance Department</strong>
+                        <small>Administration</small>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- FLOOR -->
+
+            <section class="section">
+
+                <div class="section-heading">
+
+                    <span>
+                        Floor directory
+                    </span>
+
+                    <small>
+                        Select one
+                    </small>
+
+                </div>
+
+
+                <div class="floor-grid">
+
+                    <button
+                        class="floor-button"
+                        data-floor="Ground"
+                        type="button"
+                    >
+                        <span class="floor-number">
+                            G
+                        </span>
+
+                        <span class="floor-name">
+                            Ground
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="floor-button"
+                        data-floor="1"
+                        type="button"
+                    >
+                        <span class="floor-number">
+                            1
+                        </span>
+
+                        <span class="floor-name">
+                            Floor 1
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="floor-button"
+                        data-floor="2"
+                        type="button"
+                    >
+                        <span class="floor-number">
+                            2
+                        </span>
+
+                        <span class="floor-name">
+                            Floor 2
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="floor-button"
+                        data-floor="3"
+                        type="button"
+                    >
+                        <span class="floor-number">
+                            3
+                        </span>
+
+                        <span class="floor-name">
+                            Floor 3
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="floor-button"
+                        data-floor="4"
+                        type="button"
+                    >
+                        <span class="floor-number">
+                            4
+                        </span>
+
+                        <span class="floor-name">
+                            Floor 4
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="floor-button"
+                        data-floor="5"
+                        type="button"
+                    >
+                        <span class="floor-number">
+                            5
+                        </span>
+
+                        <span class="floor-name">
+                            Floor 5
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- ISSUE TYPE -->
+
+            <section class="section">
+
+                <div class="section-heading">
+
+                    <span>
+                        Issue type
+                    </span>
+
+                </div>
+
+
+                <div class="issue-grid">
+
+                    <button
+                        class="issue-card"
+                        data-issue="Lift malfunction"
+                        type="button"
+                    >
+                        ↕ &nbsp; Lift / Elevator
+                    </button>
+
+                    <button
+                        class="issue-card"
+                        data-issue="Electrical"
+                        type="button"
+                    >
+                        ⚡ &nbsp; Electrical
+                    </button>
+
+                    <button
+                        class="issue-card"
+                        data-issue="Plumbing"
+                        type="button"
+                    >
+                        ◉ &nbsp; Plumbing
+                    </button>
+
+                    <button
+                        class="issue-card"
+                        data-issue="Cleaning"
+                        type="button"
+                    >
+                        ✦ &nbsp; Cleaning
+                    </button>
+
+                    <button
+                        class="issue-card"
+                        data-issue="AC / Cooling"
+                        type="button"
+                    >
+                        ❄ &nbsp; AC / Cooling
+                    </button>
+
+                    <button
+                        class="issue-card"
+                        data-issue="Internet"
+                        type="button"
+                    >
+                        ◌ &nbsp; Internet
+                    </button>
+
+                    <button
+                        class="issue-card"
+                        data-issue="Furniture"
+                        type="button"
+                    >
+                        ▣ &nbsp; Furniture
+                    </button>
+
+                    <button
+                        class="issue-card"
+                        data-issue="Other"
+                        type="button"
+                    >
+                        + &nbsp; Other
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- DETAILS -->
+
+            <section class="section">
+
+                <div class="section-heading">
+
+                    <span>
+                        Grievance details
+                    </span>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <div class="field">
+
+                        <label>
+                            ISSUE TITLE
+                        </label>
+
+                        <input
+                            id="issueTitle"
+                            type="text"
+                            placeholder="e.g. Lift not working"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            SPECIFIC LOCATION
+                        </label>
+
+                        <input
+                            id="specificLocation"
+                            type="text"
+                            placeholder="e.g. Lift 1"
+                        >
+
+                    </div>
+
+
+                    <div class="field full">
+
+                        <label>
+                            PRIORITY
+                        </label>
+
+
+                        <div class="priority-grid">
+
+                            <button
+                                class="priority selected"
+                                data-priority="Low"
+                                type="button"
+                            >
+                                Low
+                            </button>
+
+                            <button
+                                class="priority"
+                                data-priority="Medium"
+                                type="button"
+                            >
+                                Medium
+                            </button>
+
+                            <button
+                                class="priority"
+                                data-priority="High"
+                                type="button"
+                            >
+                                High
+                            </button>
+
+                            <button
+                                class="priority"
+                                data-priority="Urgent"
+                                type="button"
+                            >
+                                Urgent
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="field full">
+
+                        <label>
+                            DESCRIPTION
+                        </label>
+
+                        <textarea
+                            id="description"
+                            placeholder="Describe the issue..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="field full">
+
+                        <label>
+                            PHOTO / EVIDENCE
+                        </label>
+
+                        <label class="upload">
+
+                            <span class="upload-icon">
+                                +
+                            </span>
+
+                            <span>
+                                Add a photo
+                            </span>
+
+                            <input
+                                type="file"
+                                accept="image/*"
+                            >
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="actions">
+
+            <button
+                class="cancel"
+                type="button"
+                onclick="window.location.href='Map/index.html'"
+            >
+                Cancel
+            </button>
+
+            <button
+                class="submit"
+                id="submitButton"
+                type="button"
+            >
+                Submit Issue →
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script type="module">
+    import { auth, db } from "./firebase.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+    import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+    const params = new URLSearchParams(window.location.search);
+    const urlBuilding = params.get("building");
+    const urlLift = params.get("lift");
+
+    const buildingCards = [...document.querySelectorAll(".location-card")];
+    const floorButtons = [...document.querySelectorAll(".floor-button")];
+    const issueButtons = [...document.querySelectorAll(".issue-card")];
+    const priorityButtons = [...document.querySelectorAll(".priority")];
+    const photoInput = document.querySelector('input[type="file"]');
+    const submitButton = document.getElementById("submitButton");
+
+    let selectedBuilding = null;
+    let selectedFloor = null;
+    let selectedIssue = null;
+    let selectedPriority = document.querySelector(".priority.selected")?.dataset.priority || "Low";
+    let currentUser = null;
+
+    const selectOne = (items, selected, className = "selected") => {
+        items.forEach(item => item.classList.toggle(className, item === selected));
+    };
+
+    buildingCards.forEach(card => {
+        card.addEventListener("click", () => {
+            selectedBuilding = card;
+            selectOne(buildingCards, card);
+        });
+    });
+
+    floorButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            selectedFloor = button;
+            selectOne(floorButtons, button);
+        });
+    });
+
+    issueButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            selectedIssue = button;
+            selectOne(issueButtons, button);
+        });
+    });
+
+    priorityButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            selectedPriority = button.dataset.priority;
+            selectOne(priorityButtons, button);
+        });
+    });
+
+    if (urlBuilding) {
+        const card = buildingCards.find(c => c.dataset.building.toLowerCase() === urlBuilding.toLowerCase());
+        if (card) { selectedBuilding = card; selectOne(buildingCards, card); }
+    }
+
+    if (urlLift) {
+        document.getElementById("specificLocation").value = `Lift ${urlLift}`;
+        document.getElementById("issueTitle").value = "Lift not working";
+        const issue = document.querySelector('[data-issue="Lift malfunction"]');
+        if (issue) { selectedIssue = issue; selectOne(issueButtons, issue); }
+        // Mark a sensible prototype default for lift reports.
+        const high = document.querySelector('[data-priority="High"]');
+        if (high) { selectedPriority = high.dataset.priority; selectOne(priorityButtons, high); }
+    }
+
+    const setStatus = (text, isError = false) => {
+        let status = document.getElementById("submitStatus");
+        if (!status) {
+            status = document.createElement("p");
+            status.id = "submitStatus";
+            status.style.cssText = "margin:12px 0 0; font-size:13px; font-weight:600;";
+            submitButton.parentElement.insertBefore(status, submitButton);
+        }
+        status.textContent = text;
+        status.style.color = isError ? "#b42318" : "#01714e";
+    };
+
+    onAuthStateChanged(auth, user => {
+        currentUser = user || null;
+    });
+
+    submitButton.addEventListener("click", async () => {
+        const title = document.getElementById("issueTitle").value.trim();
+        const specificLocation = document.getElementById("specificLocation").value.trim();
+        const description = document.getElementById("description").value.trim();
+        const building = selectedBuilding?.dataset.building || null;
+        const floor = selectedFloor?.dataset.floor || null;
+        const issueType = selectedIssue?.dataset.issue || null;
+
+        if (!currentUser) {
+            setStatus("Please log in before submitting an issue.", true);
+            return;
+        }
+        if (!building) { setStatus("Please select a building.", true); return; }
+        if (!floor) { setStatus("Please select a floor.", true); return; }
+        if (!issueType) { setStatus("Please select an issue type.", true); return; }
+        if (!title || !description) { setStatus("Please enter an issue title and description.", true); return; }
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Submitting…";
+        setStatus("Saving your report…");
+
+        try {
+            await addDoc(collection(db, "reports"), {
+                building,
+                floor,
+                issueType,
+                title,
+                specificLocation,
+                priority: selectedPriority,
+                description,
+                photoName: photoInput?.files?.[0]?.name || null,
+                reporterEmail: currentUser.email || "",
+                status: "Open",
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+            });
+
+            setStatus("Issue submitted successfully. Redirecting to Reports…");
+            setTimeout(() => { window.location.href = "reports.html"; }, 800);
+        } catch (error) {
+            console.error("Report submission failed:", error);
+            setStatus(`Could not submit report: ${error.message}`, true);
+            submitButton.disabled = false;
+            submitButton.textContent = "Submit Issue →";
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,703 +1,669 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MaintainX | Campus Maintenance</title>
 
-    <title>MaintainX - Smart Maintenance</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f5f8f7;
+    color:#1c2824;
+}
+a{text-decoration:none;color:inherit}
+button,input{font:inherit}
 
-    <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+.header{
+    height:72px;
+    background:#fff;
+    border-bottom:1px solid #e6e9f0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 38px;
+    position:sticky;
+    top:0;
+    z-index:20;
+}
+.logo{
+    display:flex;
+    align-items:center;
+    gap:11px;
+}
+.logo-icon{
+    width:42px;height:42px;border-radius:12px;
+    background:linear-gradient(135deg,#01714e,#1aa578);
+    color:#fff;
+    display:grid;
+    place-items:center;
+    font-size:20px;
+}
+.logo h1{font-size:23px;letter-spacing:-.7px}
+.logo h1 span{color:#01714e}
+.logo p{font-size:9px;color:#7b8497;margin-top:2px}
 
-    <!-- Icons -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+.nav{
+    display:flex;
+    gap:4px;
+}
+.nav a{
+    padding:10px 12px;
+    border-radius:8px;
+    font-size:12px;
+    font-weight:600;
+    color:#1c2824;
+}
+.nav a:hover,.nav a.active{
+    background:#eaf6f1;
+    color:#01714e;
+}
 
-    <link rel="stylesheet" href="style.css">
+.header-actions{display:flex;gap:9px;align-items:center}
+.icon-btn{
+    width:40px;height:40px;border-radius:50%;
+    border:1px solid #e1e5ed;
+    background:#fff;
+    cursor:pointer;
+}
+.login {
+    background: linear-gradient(135deg, #01714e, #1aa578);
+    color: #fff;
+    border: 0;
+    border-radius: 10px;
+    height: 46px;
+    min-width: 120px;
+    padding: 0 22px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container{max-width:1400px;margin:auto;padding:22px 28px 50px}
+
+.hero{
+    min-height:420px;
+    border-radius:22px;
+    overflow:hidden;
+    display:grid;
+    grid-template-columns:1.05fr .95fr;
+    background:linear-gradient(120deg,#eef8f4,#f7fbf9);
+    border:1px solid #dfe8e4;
+}
+.hero-text{
+    padding:55px 40px 50px 55px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+.label{
+    color:#01714e;
+    font-size:10px;
+    letter-spacing:1.3px;
+    font-weight:800;
+    margin-bottom:15px;
+}
+.hero h2{
+    font-size:52px;
+    line-height:1.06;
+    letter-spacing:-2.4px;
+}
+.hero h2 span{
+    display:block;
+    color:#01714e;
+}
+.hero p{
+    max-width:560px;
+    color:#4c5872;
+    font-size:14px;
+    line-height:1.7;
+    margin-top:17px;
+}
+.search{
+    display:flex;
+    width:min(570px,100%);
+    height:50px;
+    background:#fff;
+    border:1px solid #dfe5ef;
+    border-radius:10px;
+    margin-top:22px;
+    overflow:hidden;
+}
+.search input{
+    flex:1;
+    border:0;
+    outline:0;
+    padding:0 15px;
+}
+.search button{
+    border:0;
+    width:88px;
+    color:#fff;
+    background:#01714e;
+    cursor:pointer;
+    font-weight:700;
+    font-size:12px;
+}
+.hero-buttons{display:flex;gap:10px;margin-top:15px}
+.btn{
+    padding:12px 17px;
+    border-radius:9px;
+    font-size:12px;
+    font-weight:700;
+}
+.btn-primary{background:#01714e;color:#fff}
+.btn-secondary{background:#fff;border:1px solid #dfe5ef}
+
+.hero-art{
+    position:relative;
+    overflow:hidden;
+    min-height:420px;
+}
+.sun{
+    width:350px;height:350px;border-radius:50%;
+    background:radial-gradient(circle,#d9eee7,transparent 68%);
+    position:absolute;right:8%;top:15px;
+}
+.city{
+    position:absolute;
+    bottom:0;left:8%;right:8%;
+    height:75%;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    gap:12px;
+}
+.building{
+    width:70px;
+    border-radius:7px 7px 0 0;
+    background:linear-gradient(#9bd9c5,#d9eee7);
+}
+.building:nth-child(1){height:52%}
+.building:nth-child(2){height:75%}
+.building:nth-child(3){height:62%}
+.building:nth-child(4){height:82%}
+.worker{
+    position:absolute;
+    bottom:25px;
+    right:26%;
+    text-align:center;
+}
+.head{
+    width:40px;height:40px;border-radius:50%;
+    background:#ffc18d;
+    border:4px solid #01714e;
+    margin:auto;
+}
+.body{
+    width:60px;height:85px;border-radius:15px 15px 9px 9px;
+    background:linear-gradient(135deg,#01714e,#1aa578);
+    margin:5px auto 0;
+    color:#fff;
+    display:grid;place-items:center;
+}
+.legs{
+    display:flex;justify-content:center;gap:8px;
+}
+.leg{width:15px;height:70px;background:#19243d;border-radius:8px}
+.float-card{
+    position:absolute;
+    left:8%;bottom:32px;
+    width:165px;
+    background:#fff;
+    padding:15px;
+    border-radius:12px;
+    box-shadow:0 12px 30px #24335a1a;
+    font-size:10px;
+}
+.float-card strong{display:block;font-size:11px;margin-bottom:9px}
+.float-card div{margin-top:7px;color:#556078}
+.float-card div::before{content:"✓";color:#01714e;margin-right:7px;font-weight:bold}
+
+.section{margin-top:38px}
+.section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+    margin-bottom:15px;
+}
+.section-head h2{font-size:22px;margin-top:5px}
+.section-head a{font-size:12px;color:#01714e;font-weight:700}
+
+.quick{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:13px;
+}
+.quick-card{
+    background:#fff;
+    border:1px solid #dfe8e4;
+    border-radius:14px;
+    padding:18px;
+    min-height:125px;
+    transition:.2s;
+}
+.quick-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 28px #123c3210;
+}
+.q-icon{
+    width:42px;height:42px;border-radius:10px;
+    display:grid;place-items:center;
+    color:#fff;
+    margin-bottom:12px;
+}
+.blue{background:#01714e}.green{background:#49a64b}
+.orange{background:#ff951d}.purple{background:#1aa578}
+.quick-card h3{font-size:13px}
+.quick-card p{font-size:10px;color:#6d7b75;line-height:1.5;margin-top:6px}
+
+.buildings{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+}
+.card{
+    background:#fff;
+    border:1px solid #dfe8e4;
+    border-radius:14px;
+    overflow:hidden;
+}
+.photo{
+    height:135px;
+    display:flex;
+    align-items:end;
+    justify-content:space-between;
+    padding:12px;
+    color:#fff;
+    font-size:10px;
+    font-weight:800;
+}
+.photo.one{background:linear-gradient(135deg,#4775bd,#b8d1ef)}
+.photo.two{background:linear-gradient(135deg,#5e73a2,#d0b899)}
+.photo.three{background:linear-gradient(135deg,#68778f,#c8d1db)}
+.photo.four{background:linear-gradient(135deg,#617b9b,#d5e1ed)}
+.score{background:#1c2824d9;padding:5px 7px;border-radius:5px}
+.info{padding:13px}
+.info h3{font-size:13px}
+.info p{font-size:10px;color:#6d7b75;margin-top:7px}
+.tags{
+    border-top:1px solid #edf0f5;
+    margin-top:12px;padding-top:10px;
+    display:flex;gap:7px;
+    font-size:9px;color:#667188;
+}
+
+.issues{
+    background:#fff;
+    border:1px solid #dfe8e4;
+    border-radius:14px;
+    padding:7px 17px;
+}
+.issue{
+    min-height:72px;
+    display:grid;
+    grid-template-columns:42px 1fr auto;
+    align-items:center;
+    gap:12px;
+    border-bottom:1px solid #edf0f5;
+}
+.issue:last-child{border:0}
+.issue-icon{
+    width:42px;height:42px;border-radius:10px;
+    display:grid;place-items:center;
+    background:#eaf6f1;color:#01714e;
+}
+.issue h3{font-size:12px}
+.issue p{font-size:10px;color:#6d7b75;margin-top:5px}
+.status{font-size:9px;padding:6px 8px;border-radius:5px}
+.open{background:#ffe7e7;color:#e52c2c}
+.progress{background:#fff0d5;color:#db8700}
+.done{background:#e2f7e8;color:#168541}
+
+.report{
+    margin-top:15px;
+    border-radius:15px;
+    padding:24px;
+    color:#fff;
+    background:linear-gradient(135deg,#01714e,#1aa578);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+}
+.report h2{font-size:22px}
+.report p{font-size:11px;opacity:.85;margin-top:6px}
+.report button{
+    border:0;border-radius:9px;
+    padding:12px 18px;
+    color:#01714e;background:#fff;
+    font-size:12px;font-weight:800;
+    cursor:pointer;
+    white-space:nowrap;
+}
+
+.footer{
+    text-align:center;
+    padding:35px 0 5px;
+    color:#8a93a4;
+    font-size:10px;
+}
+
+@media(max-width:1100px){
+    .nav{display:none}
+    .quick,.buildings{grid-template-columns:repeat(2,1fr)}
+    .hero{grid-template-columns:1fr}
+}
+@media(max-width:650px){
+    .header{padding:0 15px}
+    .logo p{display:none}
+    .container{padding:12px}
+    .hero-text{padding:35px 23px}
+    .hero h2{font-size:39px}
+    .hero-art{min-height:280px}
+    .quick,.buildings{grid-template-columns:1fr}
+    .hero-buttons{flex-direction:column}
+    .btn{text-align:center}
+    .report{align-items:flex-start;flex-direction:column}
+}
+.loading-issue { opacity: 0.75; }
+</style>
 </head>
 
 <body>
 
-<!-- ================= HEADER ================= -->
-
 <header class="header">
-
-    <div class="logo-area">
-        <div class="logo-icon">
-            <i class="fa-solid fa-gear"></i>
-        </div>
-
+    <a href="index.html" class="logo">
+        <div class="logo-icon">⚙</div>
         <div>
             <h1>Maintain<span>X</span></h1>
             <p>Keep Every Space. Always in Top Shape.</p>
         </div>
-    </div>
+    </a>
 
-    <nav>
-        <a class="active" href="#">
-            <i class="fa-solid fa-house"></i>
-            Home
-        </a>
-
-        <a href="#">
-            <i class="fa-solid fa-building"></i>
-            Buildings
-        </a>
-
-        <a href="./Map/index.html">
-            <i class="fa-solid fa-location-dot"></i>
-            Map
-        </a>
-
-        <a href="#">
-            <i class="fa-solid fa-chart-column"></i>
-            Reports
-        </a>
-
-        <a href="#">
-            <i class="fa-solid fa-table-cells-large"></i>
-            Dashboard
-        </a>
-
-        <a href="#">
-            <i class="fa-solid fa-circle-info"></i>
-            About
-        </a>
+    <nav class="nav">
+        <a class="active" href="index.html">Home</a>
+        <a href="Map/index.html">Map</a>
+        <a href="reports.html">Reports</a>
+        <a href="#quick-actions">Dashboard</a>
+        <a href="#about">About</a>
     </nav>
 
-    <div class="header-right">
-
-        <button class="theme-btn">
-            <i class="fa-solid fa-moon"></i>
-        </button>
-
-        <button class="notification">
-            <i class="fa-regular fa-bell"></i>
-            <span>3</span>
-        </button>
-
-        <button class="login-btn">
-            <i class="fa-solid fa-user"></i>
-            Login
-        </button>
-
+    <div class="header-actions">
+        <button class="icon-btn" id="themeBtn">☾</button>
+        <button class="icon-btn">♧</button>
+        <a href="login.html" class="login" id="authButton">Login</a>
     </div>
-
 </header>
 
+<main class="container">
 
-<!-- ================= MAIN ================= -->
+<section class="hero">
 
-<main class="main-container">
+    <div class="hero-text">
+        <div class="label">CAMPUS MAINTENANCE PLATFORM</div>
 
-    <!-- LEFT CONTENT -->
+        <h2>
+            Keep your campus
+            <span>running smoothly.</span>
+        </h2>
 
-    <section class="left-content">
+        <p>
+            Report issues, find buildings, track maintenance requests,
+            and keep every facility safe, clean and efficient.
+        </p>
 
-        <!-- HERO -->
-
-        <section class="hero">
-
-            <div class="hero-text">
-
-                <h2>
-                    Find. Track. Fix.<br>
-                    Keep Everything<br>
-                    <span>Well Maintained.</span>
-                </h2>
-
-                <p>
-                    MaintainX helps you manage maintenance of buildings,
-                    plan your tasks, and ensure a safe, clean and efficient
-                    environment for everyone.
-                </p>
-
-                <div class="search-box">
-
-                    <i class="fa-solid fa-magnifying-glass"></i>
-
-                    <input
-                        type="text"
-                        placeholder="Search for a building, e.g., Hospital, Library..."
-                    >
-
-                    <button>Search</button>
-
-                </div>
-
-                <div class="hero-buttons">
-
-                    <button class="primary-btn">
-                        <i class="fa-solid fa-building"></i>
-                        Explore Buildings
-                    </button>
-
-                    <button class="secondary-btn">
-                        <i class="fa-solid fa-location-dot"></i>
-                        View on Map
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- HERO ILLUSTRATION -->
-
-            <div class="hero-image">
-
-                <div class="city">
-
-                    <div class="building b1"></div>
-                    <div class="building b2"></div>
-                    <div class="building b3"></div>
-                    <div class="building b4"></div>
-
-                </div>
-
-                <div class="worker">
-
-                    <div class="worker-head"></div>
-
-                    <div class="worker-body">
-                        <i class="fa-solid fa-wrench"></i>
-                    </div>
-
-                    <div class="worker-leg left-leg"></div>
-                    <div class="worker-leg right-leg"></div>
-
-                </div>
-
-                <div class="clipboard">
-                    <h4>MAINTENANCE</h4>
-
-                    <p>☑ Inspection</p>
-                    <p>☑ Repair</p>
-                    <p>☑ Cleaning</p>
-                    <p>☐ Replacement</p>
-                </div>
-
-                <div class="warning">
-                    <i class="fa-solid fa-screwdriver-wrench"></i>
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- QUICK FEATURES -->
-
-        <section class="features">
-
-            <div class="feature-card blue">
-
-                <div class="feature-icon">
-                    <i class="fa-solid fa-screwdriver-wrench"></i>
-                </div>
-
-                <div>
-                    <h3>Maintenance Requests</h3>
-                    <p>Submit and track maintenance requests</p>
-                </div>
-
-            </div>
-
-
-            <div class="feature-card green">
-
-                <div class="feature-icon">
-                    <i class="fa-solid fa-clipboard-list"></i>
-                </div>
-
-                <div>
-                    <h3>Work Orders</h3>
-                    <p>Manage and assign maintenance tasks</p>
-                </div>
-
-            </div>
-
-
-            <div class="feature-card orange">
-
-                <div class="feature-icon">
-                    <i class="fa-solid fa-calendar-days"></i>
-                </div>
-
-                <div>
-                    <h3>Preventive Maintenance</h3>
-                    <p>Schedule and track routine maintenance</p>
-                </div>
-
-            </div>
-
-
-            <div class="feature-card purple">
-
-                <div class="feature-icon">
-                    <i class="fa-solid fa-box"></i>
-                </div>
-
-                <div>
-                    <h3>Inventory Management</h3>
-                    <p>Track tools, parts and stock</p>
-                </div>
-
-            </div>
-
-
-            <div class="feature-card pink">
-
-                <div class="feature-icon">
-                    <i class="fa-solid fa-chart-column"></i>
-                </div>
-
-                <div>
-                    <h3>Reports & Analytics</h3>
-                    <p>Insights to improve maintenance</p>
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- FEATURED BUILDINGS -->
-
-        <section class="buildings-section">
-
-            <div class="section-heading">
-                <h2>Featured Buildings</h2>
-                <a href="#">View All</a>
-            </div>
-
-
-            <div class="building-cards">
-
-                <!-- CARD 1 -->
-
-                <div class="building-card">
-
-                    <div class="building-photo hospital">
-                        <span>CITY HOSPITAL</span>
-                    </div>
-
-                    <div class="building-info">
-
-                        <div class="title-row">
-                            <h3>City Hospital</h3>
-                            <strong class="score green-score">88/100</strong>
-                        </div>
-
-                        <p>MG Road, Bangalore</p>
-
-                        <div class="status-icons">
-                            <i class="fa-solid fa-wheelchair"></i>
-                            <i class="fa-solid fa-calendar-check"></i>
-                            <i class="fa-solid fa-screwdriver-wrench"></i>
-                            <i class="fa-solid fa-shield-halved"></i>
-                        </div>
-
-                        <div class="checks">
-                            <span>✓</span>
-                            <span>✓</span>
-                            <span>✓</span>
-                            <span>✓</span>
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- CARD 2 -->
-
-                <div class="building-card">
-
-                    <div class="building-photo library">
-                        <span>CENTRAL LIBRARY</span>
-                    </div>
-
-                    <div class="building-info">
-
-                        <div class="title-row">
-                            <h3>Central Library</h3>
-                            <strong class="score green-score">76/100</strong>
-                        </div>
-
-                        <p>Church Street, Bangalore</p>
-
-                        <div class="status-icons">
-                            <i class="fa-solid fa-wheelchair"></i>
-                            <i class="fa-solid fa-calendar-check"></i>
-                            <i class="fa-solid fa-screwdriver-wrench"></i>
-                            <i class="fa-solid fa-shield-halved"></i>
-                        </div>
-
-                        <div class="checks">
-                            <span>✓</span>
-                            <span>✓</span>
-                            <span>✓</span>
-                            <span>✓</span>
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- CARD 3 -->
-
-                <div class="building-card">
-
-                    <div class="building-photo passport">
-                        <span>PASSPORT SEVA KENDRA</span>
-                    </div>
-
-                    <div class="building-info">
-
-                        <div class="title-row">
-                            <h3>Passport Seva Kendra</h3>
-                            <strong class="score orange-score">65/100</strong>
-                        </div>
-
-                        <p>Koramangala, Bangalore</p>
-
-                        <div class="status-icons">
-                            <i class="fa-solid fa-wheelchair"></i>
-                            <i class="fa-solid fa-calendar-check"></i>
-                            <i class="fa-solid fa-screwdriver-wrench"></i>
-                            <i class="fa-solid fa-shield-halved"></i>
-                        </div>
-
-                        <div class="checks">
-                            <span>✓</span>
-                            <span>!</span>
-                            <span>×</span>
-                            <span>✓</span>
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- CARD 4 -->
-
-                <div class="building-card">
-
-                    <div class="building-photo townhall">
-                        <span>TOWN HALL</span>
-                    </div>
-
-                    <div class="building-info">
-
-                        <div class="title-row">
-                            <h3>Town Hall</h3>
-                            <strong class="score green-score">82/100</strong>
-                        </div>
-
-                        <p>Vasanth Nagar, Bangalore</p>
-
-                        <div class="status-icons">
-                            <i class="fa-solid fa-wheelchair"></i>
-                            <i class="fa-solid fa-calendar-check"></i>
-                            <i class="fa-solid fa-screwdriver-wrench"></i>
-                            <i class="fa-solid fa-shield-halved"></i>
-                        </div>
-
-                        <div class="checks">
-                            <span>✓</span>
-                            <span>✓</span>
-                            <span>✓</span>
-                            <span>✓</span>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </section>
-
-
-    <!-- ================= RIGHT SIDEBAR ================= -->
-
-    <aside class="sidebar">
-
-        <!-- BUILDING SAFETY -->
-
-        <div class="safety-card">
-
-            <div class="safety-illustration">
-
-                <div class="mini-building">
-                    <i class="fa-solid fa-building"></i>
-                </div>
-
-                <div class="shield">
-                    <i class="fa-solid fa-check"></i>
-                </div>
-
-                <div class="spark">✦</div>
-
-            </div>
-
+        <div class="search">
+            <input id="searchInput" placeholder="Search for a building...">
+            <button id="searchBtn">Search</button>
         </div>
 
-
-        <!-- RECENT ISSUES -->
-
-        <div class="issues-card">
-
-            <div class="issue-heading">
-                <h2>Recent Issues</h2>
-                <a href="#">View All</a>
-            </div>
-
-
-            <div class="issue">
-
-                <div class="issue-img lift">
-                    <i class="fa-solid fa-elevator"></i>
-                </div>
-
-                <div class="issue-info">
-                    <h3>Lift not working</h3>
-                    <p>City Hospital</p>
-                </div>
-
-                <div>
-                    <small>2h ago</small>
-                    <label class="open">Open</label>
-                </div>
-
-            </div>
-
-
-            <div class="issue">
-
-                <div class="issue-img water">
-                    <i class="fa-solid fa-droplet"></i>
-                </div>
-
-                <div class="issue-info">
-                    <h3>Water leakage</h3>
-                    <p>Central Library</p>
-                </div>
-
-                <div>
-                    <small>3h ago</small>
-                    <label class="progress">In Progress</label>
-                </div>
-
-            </div>
-
-
-            <div class="issue">
-
-                <div class="issue-img light">
-                    <i class="fa-solid fa-lightbulb"></i>
-                </div>
-
-                <div class="issue-info">
-                    <h3>Lighting issue in hallway</h3>
-                    <p>Town Hall</p>
-                </div>
-
-                <div>
-                    <small>5h ago</small>
-                    <label class="progress">In Progress</label>
-                </div>
-
-            </div>
-
-
-            <div class="issue">
-
-                <div class="issue-img ac">
-                    <i class="fa-solid fa-snowflake"></i>
-                </div>
-
-                <div class="issue-info">
-                    <h3>AC not cooling</h3>
-                    <p>Passport Seva Kendra</p>
-                </div>
-
-                <div>
-                    <small>1d ago</small>
-                    <label class="resolved">Resolved</label>
-                </div>
-
-            </div>
-
-
-            <button class="report-btn">
-                <i class="fa-solid fa-plus"></i>
-                Report an Issue
-            </button>
-
+        <div class="hero-buttons">
+            <a href="Map/index.html" class="btn btn-primary">Explore Campus Map</a>
+            <a href="report.html" class="btn btn-secondary">Report an Issue</a>
         </div>
-
-    </aside>
-
-</main>
-
-
-<!-- ================= BOTTOM BENEFITS ================= -->
-
-<section class="benefits">
-
-    <div class="benefit">
-
-        <div class="benefit-icon purple-icon">
-            <i class="fa-solid fa-bolt"></i>
-        </div>
-
-        <div>
-            <h3>Smart Maintenance</h3>
-            <p>Automate tasks and reduce downtime.</p>
-        </div>
-
     </div>
 
+    <div class="hero-art">
+        <div class="sun"></div>
 
-    <div class="benefit">
-
-        <div class="benefit-icon green-icon">
-            <i class="fa-solid fa-shield-halved"></i>
+        <div class="city">
+            <div class="building"></div>
+            <div class="building"></div>
+            <div class="building"></div>
+            <div class="building"></div>
         </div>
 
-        <div>
-            <h3>Stay Compliant</h3>
-            <p>Ensure safety and regulatory compliance.</p>
+        <div class="float-card">
+            <strong>Maintenance Status</strong>
+            <div>Inspection complete</div>
+            <div>Repair tracked</div>
+            <div>Cleaning scheduled</div>
+            <div>Safety monitored</div>
         </div>
 
-    </div>
-
-
-    <div class="benefit">
-
-        <div class="benefit-icon orange-icon">
-            <i class="fa-solid fa-chart-simple"></i>
+        <div class="worker">
+            <div class="head"></div>
+            <div class="body">🔧</div>
+            <div class="legs">
+                <div class="leg"></div>
+                <div class="leg"></div>
+            </div>
         </div>
-
-        <div>
-            <h3>Data-Driven Decisions</h3>
-            <p>Use insights to improve efficiency and performance.</p>
-        </div>
-
-    </div>
-
-
-    <div class="benefit">
-
-        <div class="benefit-icon blue-icon">
-            <i class="fa-solid fa-users"></i>
-        </div>
-
-        <div>
-            <h3>Built for Everyone</h3>
-            <p>Empowering teams to keep spaces running smoothly.</p>
-        </div>
-
     </div>
 
 </section>
 
-<!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+
+<section class="section" id="quick-actions">
+    <div class="section-head">
+        <div>
+            <div class="label">QUICK ACCESS</div>
+            <h2>Everything you need, in one place.</h2>
+        </div>
+    </div>
+
+    <div class="quick">
+
+        <a href="#issues" class="quick-card">
+            <div class="q-icon blue">🔧</div>
+            <h3>Maintenance Requests</h3>
+            <p>Submit and track issues that need attention.</p>
+        </a>
+
+        <a href="#issues" class="quick-card">
+            <div class="q-icon green">✓</div>
+            <h3>Work Orders</h3>
+            <p>Manage and assign maintenance tasks.</p>
+        </a>
+
+        <a href="Map/index.html" class="quick-card">
+            <div class="q-icon orange">▣</div>
+            <h3>Preventive Maintenance</h3>
+            <p>Schedule routine checks before problems grow.</p>
+        </a>
+
+        <a href="#issues" class="quick-card">
+            <div class="q-icon purple">▥</div>
+            <h3>Reports & Analytics</h3>
+            <p>See maintenance activity and performance.</p>
+        </a>
+
+    </div>
+</section>
+
+
+
+<section class="section" id="issues">
+
+    <div class="section-head">
+        <div>
+            <div class="label">ACTIVITY</div>
+            <h2>Recent Issues</h2>
+        </div>
+    </div>
+
+    <div class="issues" id="recentIssuesList">
+
+        <div class="issue loading-issue">
+            <div class="issue-icon">…</div>
+            <div>
+                <h3>Loading recent issues…</h3>
+                <p>Please wait while reports are loaded.</p>
+            </div>
+            <span class="status">Loading</span>
+        </div>
+
+    </div>
+
+    <div class="report">
+        <div>
+            <h2>Found a problem?</h2>
+            <p>Report it and help your campus team resolve it faster.</p>
+        </div>
+        <button id="reportBtn" type="button">
+    Report an Issue →
+</button>
+    </div>
+
+</section>
+
+
+<section class="section" id="about">
+    <div class="report">
+        <div>
+            <div class="label" style="color:#d9eee7">MAINTAINX</div>
+            <h2>One place for a better maintained campus.</h2>
+            <p>
+                Building information, maintenance requests, issue reporting
+                and activity tracking in one workspace.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="footer">
+    MaintainX · Smart Campus Maintenance
+</div>
+
+</main>
+
 
 <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBScWh3x3OSAopqaIlgoDrAJYq_UjywfGA",
-      authDomain: "sih-s37.firebaseapp.com",
-      projectId: "sih-s37",
-      storageBucket: "sih-s37.firebasestorage.app",
-      messagingSenderId: "754412814947",
-      appId: "1:754412814947:web:dc3b4111d72769adfc2e56",
-      measurementId: "G-DHTBNTK4XW"
+const searchInput = document.getElementById("searchInput");
+const searchBtn = document.getElementById("searchBtn");
+
+function searchBuildings() {
+    const query = searchInput.value.trim();
+    window.location.href = query
+        ? `Map/index.html?search=${encodeURIComponent(query)}`
+        : "Map/index.html";
+}
+
+searchBtn.addEventListener("click", searchBuildings);
+
+searchInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") searchBuildings();
+});
+
+document.getElementById("reportBtn").addEventListener("click", () => {
+    window.location.href = "report.html";
+});
+
+document.getElementById("themeBtn").addEventListener("click", () => {
+    document.body.style.background =
+        document.body.style.background === "rgb(15, 20, 35)"
+        ? "#f5f8f7"
+        : "#0f1423";
+
+    document.body.style.color =
+        document.body.style.background === "rgb(15, 20, 35)"
+        ? "#fff"
+        : "#1c2824";
+});
+</script>
+<script type="module">
+    import { auth, db } from "./firebase.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+    import { collection, query, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+    const authButton = document.getElementById("authButton");
+    onAuthStateChanged(auth, (user) => {
+        if (!authButton) return;
+        if (user) {
+            authButton.href = "user.html";
+            authButton.textContent = "👤";
+            authButton.title = user.email || "Account";
+        } else {
+            authButton.href = "login.html";
+            authButton.textContent = "Login";
+            authButton.title = "Login";
+        }
+    });
+
+    const recentList = document.getElementById("recentIssuesList");
+    const iconFor = (type) => ({
+        "Lift malfunction": "⇅",
+        "Electrical": "⚡",
+        "Plumbing": "💧",
+        "Cleaning": "✦",
+        "AC / Cooling": "❄",
+        "Internet": "◎",
+        "Furniture": "▣",
+        "Other": "•"
+    }[type] || "•");
+
+    const statusClass = (status) => {
+        if (status === "Resolved") return "done";
+        if (status === "In Progress") return "progress";
+        return "open";
     };
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    const timeText = (timestamp) => {
+        if (!timestamp?.toDate) return "Just now";
+        const diff = Math.max(0, Date.now() - timestamp.toDate().getTime());
+        const mins = Math.floor(diff / 60000);
+        if (mins < 1) return "Just now";
+        if (mins < 60) return `${mins}m ago`;
+        const hours = Math.floor(mins / 60);
+        if (hours < 24) return `${hours}h ago`;
+        const days = Math.floor(hours / 24);
+        return `${days}d ago`;
+    };
 
-    // 1. Helper to format standard building codes (e.g. "SC-Block" -> "BLK-SC")
-    function formatBuildingCode(name) {
-      if (!name) return "BLK-GEN";
-      const clean = name.trim().toUpperCase();
-      const code = clean.replace(/BLOCK/g, '').replace(/[^A-Z0-9]/g, '');
-      return `BLK-${code || clean.substring(0, 3)}`;
-    }
-
-    // 2. Real-Time Complaints Feed
-    db.collection("complaints")
-      .orderBy("timestamp", "desc")
-      .limit(4)
-      .onSnapshot((snapshot) => {
-        const issuesCard = document.querySelector(".issues-card");
-        if (!issuesCard) return;
-        const reportBtn = issuesCard.querySelector(".report-btn");
-
-        // Clear mock issues
-        issuesCard.querySelectorAll(".issue").forEach((el) => el.remove());
-
-        // Render live Firestore complaints
-        snapshot.forEach((doc) => {
-          const c = doc.data();
-          const statusClass = c.status === "resolved" ? "resolved" : "open";
-
-          const issueDiv = document.createElement("div");
-          issueDiv.className = "issue";
-          issueDiv.innerHTML = `
-            <div class="issue-img lift">
-              <i class="fa-solid fa-triangle-exclamation"></i>
-            </div>
-            <div class="issue-info">
-              <h3>${c.description || c.issueType}</h3>
-              <p>${c.buildingname || c.buildingcode} (${c.buildingcode || ''})</p>
-            </div>
-            <div>
-              <small>Live</small>
-              <label class="${statusClass}">${c.status || "Open"}</label>
-            </div>
-          `;
-          issuesCard.insertBefore(issueDiv, reportBtn);
-        });
-      });
-
-    // 3. Submit Complaint Function
-    function submitReport(buildingCode, buildingName, issueTitle, description) {
-      return db.collection("complaints").add({
-        buildingcode: buildingCode,
-        buildingname: buildingName,
-        issueType: issueTitle,
-        description: description,
-        status: "pending",
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      });
-    }
-
-    // 4. Connect "+ Report an Issue" Button
-    document.querySelector(".report-btn")?.addEventListener("click", () => {
-      const building = prompt("Enter Building / Block Name (e.g., SC-Block, E-Block, Library):", "SC-Block");
-      if (!building) return;
-
-      const issue = prompt(`Enter the issue description for ${building}:`);
-      if (issue) {
-        const bCode = formatBuildingCode(building);
-        submitReport(bCode, building, "Maintenance Request", issue)
-          .then(() => alert(`Report for ${building} (${bCode}) successfully saved!`))
-          .catch((err) => alert("Error: " + err.message));
-      }
+    const reportsQuery = query(collection(db, "reports"), orderBy("createdAt", "desc"), limit(4));
+    onSnapshot(reportsQuery, (snapshot) => {
+        if (!recentList) return;
+        if (snapshot.empty) {
+            recentList.innerHTML = `<div class="issue"><div class="issue-icon">✓</div><div><h3>No reports yet</h3><p>Submitted issues will appear here.</p></div><span class="status">Empty</span></div>`;
+            return;
+        }
+        recentList.innerHTML = snapshot.docs.map(doc => {
+            const r = doc.data();
+            const status = r.status || "Open";
+            const place = [r.building, r.floor ? `Floor ${r.floor}` : ""].filter(Boolean).join(" · ");
+            return `<div class="issue">
+                <div class="issue-icon">${iconFor(r.issueType)}</div>
+                <div>
+                    <h3>${escapeHtml(r.title || "Untitled issue")}</h3>
+                    <p>${escapeHtml(place || "Campus") } · Reported ${timeText(r.createdAt)}</p>
+                </div>
+                <span class="status ${statusClass(status)}">${escapeHtml(status)}</span>
+            </div>`;
+        }).join('');
+    }, (error) => {
+        console.error("Recent reports error:", error);
+        if (recentList) recentList.innerHTML = `<div class="issue"><div class="issue-icon">!</div><div><h3>Unable to load reports</h3><p>Check Firestore rules and your Firebase connection.</p></div><span class="status open">Error</span></div>`;
     });
-  </script>
+
+    function escapeHtml(value) {
+        return String(value ?? "").replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[ch]));
+    }
+</script>
 </body>
 </html>

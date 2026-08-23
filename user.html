@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Profile - MaintainX</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body class="login-page">
+
+
+<div class="login-wrapper">
+
+    <div class="login-card">
+
+        <!-- PROFILE ICON -->
+
+        <div class="login-logo">
+
+            <div class="login-logo-icon">
+                <i class="fa-solid fa-user"></i>
+            </div>
+
+            <div>
+
+                <h1>
+                    Maintain<span>X</span>
+                </h1>
+
+                <p>
+                    My Account
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- PROFILE -->
+
+        <div class="login-heading">
+
+            <h2>
+                My Profile
+            </h2>
+
+            <p id="userEmail">
+                Loading...
+            </p>
+
+        </div>
+
+
+        <!-- ACCOUNT INFO -->
+
+        <div style="
+            margin: 25px 0;
+            padding: 18px;
+            background: #f7f8ff;
+            border-radius: 12px;
+        ">
+
+            <p style="
+                margin: 0 0 8px;
+                font-size: 13px;
+                color: #666;
+            ">
+                Email
+            </p>
+
+            <p
+                id="profileEmail"
+                style="
+                    margin: 0;
+                    font-weight: 600;
+                    color: #17213f;
+                    word-break: break-word;
+                "
+            >
+                Loading...
+            </p>
+
+        </div>
+
+
+        <!-- LOGOUT -->
+
+        <button
+            id="logoutButton"
+            class="submit-login"
+            type="button"
+        >
+
+            <span>
+                Logout
+            </span>
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+        </button>
+
+
+        <!-- BACK -->
+
+        <a
+            href="index.html"
+            class="back-home"
+            style="margin-top: 20px;"
+        >
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to MaintainX
+
+        </a>
+
+
+    </div>
+
+</div>
+
+
+<script type="module">
+
+    import { auth } from "./firebase.js";
+
+    import {
+        onAuthStateChanged,
+        signOut
+    } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+
+
+    const userEmail =
+        document.getElementById("userEmail");
+
+    const profileEmail =
+        document.getElementById("profileEmail");
+
+    const logoutButton =
+        document.getElementById("logoutButton");
+
+
+    // Check current user
+
+    onAuthStateChanged(auth, (user) => {
+
+        if (user) {
+
+            userEmail.textContent =
+                user.email;
+
+            profileEmail.textContent =
+                user.email;
+
+        } else {
+
+            // Not logged in
+            window.location.href =
+                "login.html";
+
+        }
+
+    });
+
+
+    // Logout
+
+    logoutButton.addEventListener(
+        "click",
+        async () => {
+
+            try {
+
+                await signOut(auth);
+
+                window.location.href =
+                    "login.html";
+
+            } catch (error) {
+
+                console.error(
+                    "Logout failed:",
+                    error
+                );
+
+                alert(
+                    "Unable to logout. Please try again."
+                );
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reports | MaintainX</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:#f3f7f5;color:#1c2824}
+.header{height:74px;background:#fff;border-bottom:1px solid #e0e7e4;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:5}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:#10201a}.logo-icon{width:38px;height:38px;border-radius:11px;background:#01714e;color:#fff;display:grid;place-items:center;font-weight:800}.logo h1{font-size:18px}.logo p{font-size:10px;color:#6d7773;margin-top:2px}
+.nav{display:flex;gap:6px}.nav a{padding:10px 12px;border-radius:9px;text-decoration:none;color:#26312d;font-size:13px}.nav a.active{background:#e7f3ef;color:#01714e;font-weight:700}
+.login{border:1px solid #cfe1db;border-radius:9px;padding:9px 13px;color:#01714e;text-decoration:none;font-weight:700;font-size:12px}
+.wrap{max-width:1180px;margin:32px auto;padding:0 20px}.kicker{font-size:11px;letter-spacing:.14em;color:#01714e;font-weight:800}.top{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}.top h2{margin-top:5px;font-size:31px}.top p{margin-top:7px;color:#68756f;font-size:13px}.actions{display:flex;gap:8px}.btn{border:1px solid #d5e2de;background:#fff;border-radius:9px;padding:10px 14px;text-decoration:none;color:#26312d;font-size:12px;font-weight:700}.btn.primary{background:#01714e;color:#fff;border-color:#01714e}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0}.stat{background:#fff;border:1px solid #dce7e3;border-radius:14px;padding:16px}.stat span{font-size:11px;color:#74807b}.stat strong{display:block;font-size:26px;margin-top:5px}
+.toolbar{display:flex;gap:10px;margin-bottom:14px}.toolbar input,.toolbar select{flex:1;border:1px solid #d5e2de;border-radius:9px;padding:11px 12px;background:#fff;outline:none;font-size:12px}.toolbar select{flex:0 0 180px}
+.table{background:#fff;border:1px solid #dce7e3;border-radius:16px;overflow:hidden}.table-head,.row{display:grid;grid-template-columns:1.4fr .8fr .8fr .8fr 1fr 1fr;gap:12px;align-items:center;padding:13px 16px}.table-head{background:#f7faf9;color:#6b7772;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}.row{border-top:1px solid #edf1ef;font-size:12px}.title{font-weight:700}.muted{color:#7a8580;font-size:11px;margin-top:3px}.pill{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:800}.open{background:#ffe8e8;color:#b42318}.progress{background:#fff1d6;color:#9a6700}.done{background:#e4f6ea;color:#18794e}.priority{background:#eef3f1;color:#50605a}.high{background:#fff1d9;color:#995c00}.urgent{background:#ffe4ec;color:#b4235e}.empty{padding:38px;text-align:center;color:#7b8682;font-size:13px}.error{padding:22px;color:#b42318}
+@media(max-width:900px){.nav{display:none}.stats{grid-template-columns:repeat(2,1fr)}.table{overflow:auto}.table-head,.row{min-width:850px}.top{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<header class="header">
+    <a class="logo" href="index.html"><div class="logo-icon">M</div><div><h1>MaintainX</h1><p>Smart campus maintenance</p></div></a>
+    <nav class="nav"><a href="index.html">Home</a><a href="Map/index.html">Map</a><a class="active" href="reports.html">Reports</a><a href="report.html">Report Issue</a></nav>
+    <a class="login" id="authButton" href="login.html">Login</a>
+</header>
+<main class="wrap">
+  <div class="top"><div><div class="kicker">MAINTENANCE REPORTS</div><h2>All Reports</h2><p>Live list of issues submitted through MaintainX.</p></div><div class="actions"><a class="btn" href="index.html">← Home</a><a class="btn primary" href="report.html">+ New Report</a></div></div>
+  <div class="stats"><div class="stat"><span>Total</span><strong id="totalCount">0</strong></div><div class="stat"><span>Open</span><strong id="openCount">0</strong></div><div class="stat"><span>In Progress</span><strong id="progressCount">0</strong></div><div class="stat"><span>Resolved</span><strong id="resolvedCount">0</strong></div></div>
+  <div class="toolbar"><input id="search" placeholder="Search title, building, location, reporter…"><select id="statusFilter"><option value="all">All statuses</option><option>Open</option><option>In Progress</option><option>Resolved</option></select><select id="priorityFilter"><option value="all">All priorities</option><option>Low</option><option>Medium</option><option>High</option><option>Urgent</option></select></div>
+  <section class="table"><div class="table-head"><div>Issue</div><div>Location</div><div>Type</div><div>Priority</div><div>Status</div><div>Reporter / Time</div></div><div id="rows"><div class="empty">Loading reports…</div></div></section>
+</main>
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+import { collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+const rows=document.getElementById('rows'), search=document.getElementById('search'), statusFilter=document.getElementById('statusFilter'), priorityFilter=document.getElementById('priorityFilter');
+let reports=[];
+const esc=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+const time=t=>{if(!t?.toDate)return 'Just now';const d=Math.max(0,Date.now()-t.toDate().getTime()),m=Math.floor(d/60000);if(m<1)return 'Just now';if(m<60)return `${m}m ago`;const h=Math.floor(m/60);if(h<24)return `${h}h ago`;return `${Math.floor(h/24)}d ago`};
+const cls=s=>s==='Resolved'?'done':s==='In Progress'?'progress':'open';
+const pcls=p=>p==='Urgent'?'urgent':p==='High'?'high':'priority';
+function render(){const q=search.value.trim().toLowerCase(), sf=statusFilter.value,pf=priorityFilter.value;const filtered=reports.filter(r=>{const hay=[r.title,r.building,r.specificLocation,r.reporterEmail,r.issueType].join(' ').toLowerCase();return (!q||hay.includes(q))&&(sf==='all'||r.status===sf)&&(pf==='all'||r.priority===pf)});rows.innerHTML=filtered.length?filtered.map(r=>`<div class="row"><div><div class="title">${esc(r.title||'Untitled issue')}</div><div class="muted">${esc(r.description||'')}</div></div><div><div class="title">${esc(r.building||'—')}</div><div class="muted">${r.floor?`Floor ${esc(r.floor)}`:''}${r.specificLocation?` · ${esc(r.specificLocation)}`:''}</div></div><div>${esc(r.issueType||'Other')}</div><div><span class="pill ${pcls(r.priority)}">${esc(r.priority||'Low')}</span></div><div><span class="pill ${cls(r.status||'Open')}">${esc(r.status||'Open')}</span></div><div><div>${esc(r.reporterEmail||'Unknown')}</div><div class="muted">${time(r.createdAt)}</div></div></div>`).join(''):'<div class="empty">No reports match your filters.</div>';document.getElementById('totalCount').textContent=reports.length;document.getElementById('openCount').textContent=reports.filter(r=>(r.status||'Open')==='Open').length;document.getElementById('progressCount').textContent=reports.filter(r=>r.status==='In Progress').length;document.getElementById('resolvedCount').textContent=reports.filter(r=>r.status==='Resolved').length;}
+search.addEventListener('input',render);statusFilter.addEventListener('change',render);priorityFilter.addEventListener('change',render);
+onAuthStateChanged(auth,user=>{if(!user){window.location.href='login.html';return;}document.getElementById('authButton').textContent='👤';document.getElementById('authButton').href='user.html';const qy=query(collection(db,'reports'),orderBy('createdAt','desc'));onSnapshot(qy,snap=>{reports=snap.docs.map(d=>({id:d.id,...d.data()}));render()},err=>{console.error(err);rows.innerHTML='<div class="error">Unable to load reports. Check your Firestore rules and Firebase project configuration.</div>';});});
+</script>
+</body>
+</html>
