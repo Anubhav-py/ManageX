@@ -677,15 +677,18 @@
       });
     }
 
-    // 3. Connect the "+ Report an Issue" Button
-    document.querySelector(".report-btn")?.addEventListener("click", () => {
-      const issue = prompt("Enter the issue description:");
-      if (issue) {
-        submitReport("BLK-A", "A-Block", "Maintenance Request", issue)
-          .then(() => alert("Report successfully saved to Firestore!"))
-          .catch((err) => alert("Error: " + err.message));
-      }
-    });
+// 3. Connect the "+ Report an Issue" Button (Dynamic Block Selection)
+document.querySelector(".report-btn")?.addEventListener("click", () => {
+  const building = prompt("Enter Building / Block Name (e.g. E-Block, A-Block, C-Block, Library):", "E-Block");
+  if (!building) return;
+
+  const issue = prompt(`Enter the issue description for ${building}:`);
+  if (issue) {
+    submitReport(building.toUpperCase(), building, "Maintenance Request", issue)
+      .then(() => alert(`Report for ${building} successfully saved to Firestore!`))
+      .catch((err) => alert("Error: " + err.message));
+  }
+});
   </script>
 </body>
 </html>
