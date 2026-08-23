@@ -676,6 +676,15 @@
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       });
     }
+    // Helper to convert building name to code (e.g., "E-Block" -> "BLK-E")
+    function formatBuildingCode(name) {
+      const clean = name.trim().toUpperCase();
+      if (clean.includes("BLOCK") || clean.includes("-")) {
+        const letter = clean.replace(/[^A-Z0-9]/g, '').replace('BLOCK', '');
+        return `BLK-${letter || 'A'}`;
+      }
+      return `BLK-${clean.substring(0, 3)}`;
+    }
 
 // 3. Connect the "+ Report an Issue" Button (Dynamic Block Selection)
 document.querySelector(".report-btn")?.addEventListener("click", () => {
