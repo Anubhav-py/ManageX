@@ -177,3 +177,31 @@ document.getElementById('resetView').addEventListener('click', () => {
 });
 
 renderFloorButtons();
+// Function to submit complaint to Firestore from the interactive map
+function submitMapReport(buildingName, liftId, description) {
+  return db.collection("complaints").add({
+    buildingcode: blockInitials(buildingName),
+    buildingname: buildingName,
+    issueType: `Lift ${liftId} Issue`,
+    description: description || `Issue reported for Lift ${liftId} in ${buildingName}`,
+    status: "pending",
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  });
+}
+
+// Wire the grievance modal submit button (if a form exists in Map/index.html)
+const grievanceForm = document.querySelector('#grievanceBackdrop form') || document.querySelector('#grievanceBackdrop button[type="submit"]');
+if (grievanceForm) {
+  grievanceForm.addEventListener('click', (e) => {
+    e.preventDefault();
+    const descInput = document.querySelector('#grievanceBackdrop textarea') || document.querySelector('#grievanceBackdrop input');
+    const desc = descInput ? descInput.value : "Lift reported out of order via map";
+    
+    submitMapReport(selectedBlock, "1", desc)
+      .then(() => {
+        alert(`Grievance logged for ${selectedBlock}!`);
+        closeGrievance();
+      })
+      .catch((err) => alert("Error saving report: " + err.message));
+  });
+}
