@@ -21,7 +21,7 @@ body{font-family:Arial,Helvetica,sans-serif;background:#f3f7f5;color:#1c2824}
 <body>
 <header class="header">
     <a class="logo" href="index.html"><div class="logo-icon">M</div><div><h1>MaintainX</h1><p>Smart campus maintenance</p></div></a>
-    <nav class="nav"><a href="index.html">Home</a><a href="Map/index.html">Map</a><a class="active" href="reports.html">Reports</a><a href="report.html">Report Issue</a></nav>
+    <nav class="nav"><a href="index.html">Home</a><a href="Map/index.html">Map</a><a class="active" href="reports.html">Reports</a> <a href="dashboard.html">Dashboard</a><a href="report.html">Report Issue</a></nav>
     <a class="login" id="authButton" href="login.html">Login</a>
 </header>
 <main class="wrap">
@@ -33,14 +33,121 @@ body{font-family:Arial,Helvetica,sans-serif;background:#f3f7f5;color:#1c2824}
 <script type="module">
 import { auth, db } from "./firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-import { collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+import {
+    collection,
+    query,
+    orderBy,
+    onSnapshot,
+    doc,
+    updateDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 const rows=document.getElementById('rows'), search=document.getElementById('search'), statusFilter=document.getElementById('statusFilter'), priorityFilter=document.getElementById('priorityFilter');
 let reports=[];
 const esc=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
 const time=t=>{if(!t?.toDate)return 'Just now';const d=Math.max(0,Date.now()-t.toDate().getTime()),m=Math.floor(d/60000);if(m<1)return 'Just now';if(m<60)return `${m}m ago`;const h=Math.floor(m/60);if(h<24)return `${h}h ago`;return `${Math.floor(h/24)}d ago`};
 const cls=s=>s==='Resolved'?'done':s==='In Progress'?'progress':'open';
 const pcls=p=>p==='Urgent'?'urgent':p==='High'?'high':'priority';
-function render(){const q=search.value.trim().toLowerCase(), sf=statusFilter.value,pf=priorityFilter.value;const filtered=reports.filter(r=>{const hay=[r.title,r.building,r.specificLocation,r.reporterEmail,r.issueType].join(' ').toLowerCase();return (!q||hay.includes(q))&&(sf==='all'||r.status===sf)&&(pf==='all'||r.priority===pf)});rows.innerHTML=filtered.length?filtered.map(r=>`<div class="row"><div><div class="title">${esc(r.title||'Untitled issue')}</div><div class="muted">${esc(r.description||'')}</div></div><div><div class="title">${esc(r.building||'—')}</div><div class="muted">${r.floor?`Floor ${esc(r.floor)}`:''}${r.specificLocation?` · ${esc(r.specificLocation)}`:''}</div></div><div>${esc(r.issueType||'Other')}</div><div><span class="pill ${pcls(r.priority)}">${esc(r.priority||'Low')}</span></div><div><span class="pill ${cls(r.status||'Open')}">${esc(r.status||'Open')}</span></div><div><div>${esc(r.reporterEmail||'Unknown')}</div><div class="muted">${time(r.createdAt)}</div></div></div>`).join(''):'<div class="empty">No reports match your filters.</div>';document.getElementById('totalCount').textContent=reports.length;document.getElementById('openCount').textContent=reports.filter(r=>(r.status||'Open')==='Open').length;document.getElementById('progressCount').textContent=reports.filter(r=>r.status==='In Progress').length;document.getElementById('resolvedCount').textContent=reports.filter(r=>r.status==='Resolved').length;}
+function render() {
+    const q = search.value.trim().toLowerCase();
+    const sf = statusFilter.value;
+    const pf = priorityFilter.value;
+
+    const filtered = reports.filter(r => {
+        const hay = [
+            r.title,
+            r.building,
+            r.specificLocation,
+            r.reporterEmail,
+            r.issueType
+        ].join(" ").toLowerCase();
+
+        return (
+            (!q || hay.includes(q)) &&
+            (sf === "all" || r.status === sf) &&
+            (pf === "all" || r.priority === pf)
+        );
+    });
+
+    rows.innerHTML = filtered.length
+        ? filtered.map(r => `
+            <div class="row">
+
+                <div>
+                    <div class="title">
+                        ${esc(r.title || "Untitled issue")}
+                    </div>
+
+                    <div class="muted">
+                        ${esc(r.description || "")}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="title">
+                        ${esc(r.building || "—")}
+                    </div>
+
+                    <div class="muted">
+                        ${r.floor ? `Floor ${esc(r.floor)}` : ""}
+                        ${r.specificLocation ? ` · ${esc(r.specificLocation)}` : ""}
+                    </div>
+                </div>
+
+                <div>
+                    ${esc(r.issueType || "Other")}
+                </div>
+
+                <div>
+                    <span class="pill ${pcls(r.priority)}">
+                        ${esc(r.priority || "Low")}
+                    </span>
+                </div>
+
+                <div>
+                    <select
+                        class="status-select"
+                        data-id="${r.id}"
+                    >
+                        <option value="Open" ${r.status === "Open" ? "selected" : ""}>
+                            Open
+                        </option>
+
+                        <option value="In Progress" ${r.status === "In Progress" ? "selected" : ""}>
+                            In Progress
+                        </option>
+
+                        <option value="Resolved" ${r.status === "Resolved" ? "selected" : ""}>
+                            Resolved
+                        </option>
+                    </select>
+                </div>
+
+                <div>
+                    <div>
+                        ${esc(r.reporterEmail || "Unknown")}
+                    </div>
+
+                    <div class="muted">
+                        ${time(r.createdAt)}
+                    </div>
+                </div>
+
+            </div>
+        `).join("")
+        : '<div class="empty">No reports match your filters.</div>';
+
+    document.getElementById("totalCount").textContent = reports.length;
+
+    document.getElementById("openCount").textContent =
+        reports.filter(r => (r.status || "Open") === "Open").length;
+
+    document.getElementById("progressCount").textContent =
+        reports.filter(r => r.status === "In Progress").length;
+
+    document.getElementById("resolvedCount").textContent =
+        reports.filter(r => r.status === "Resolved").length;
+}
 search.addEventListener('input',render);statusFilter.addEventListener('change',render);priorityFilter.addEventListener('change',render);
 onAuthStateChanged(auth,user=>{if(!user){window.location.href='login.html';return;}document.getElementById('authButton').textContent='👤';document.getElementById('authButton').href='user.html';const qy=query(collection(db,'reports'),orderBy('createdAt','desc'));onSnapshot(qy,snap=>{reports=snap.docs.map(d=>({id:d.id,...d.data()}));render()},err=>{console.error(err);rows.innerHTML='<div class="error">Unable to load reports. Check your Firestore rules and Firebase project configuration.</div>';});});
 </script>
