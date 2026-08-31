@@ -1,0 +1,2005 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#01714e">
+
+    <title>Dashboard | MaintainX</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f3f7f5;
+            color: #1c2824;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            height: 74px;
+
+            background: white;
+
+            border-bottom: 1px solid #dfe8e4;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 28px;
+
+            position: sticky;
+            top: 0;
+
+            z-index: 10;
+        }
+
+
+        .logo {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            text-decoration: none;
+
+            color: #10201a;
+        }
+
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 11px;
+
+            background: #01714e;
+
+            color: white;
+
+            display: grid;
+            place-items: center;
+
+            font-weight: 800;
+        }
+
+
+        .logo h1 {
+            font-size: 18px;
+        }
+
+
+        .logo p {
+            font-size: 10px;
+
+            color: #6d7773;
+
+            margin-top: 2px;
+        }
+
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        .nav {
+            display: flex;
+
+            gap: 6px;
+        }
+
+
+        .nav a {
+            padding: 10px 12px;
+
+            border-radius: 9px;
+
+            text-decoration: none;
+
+            color: #26312d;
+
+            font-size: 13px;
+        }
+
+
+        .nav a:hover {
+            background: #f0f6f3;
+        }
+
+
+        .nav a.active {
+            background: #e7f3ef;
+
+            color: #01714e;
+
+            font-weight: 700;
+        }
+
+
+        .login {
+            border: 1px solid #cfe1db;
+
+            border-radius: 9px;
+
+            padding: 9px 13px;
+
+            color: #01714e;
+
+            text-decoration: none;
+
+            font-weight: 700;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .wrap {
+            max-width: 1180px;
+
+            margin: 32px auto;
+
+            padding: 0 20px 60px;
+        }
+
+
+        .kicker {
+            font-size: 11px;
+
+            letter-spacing: .14em;
+
+            color: #01714e;
+
+            font-weight: 800;
+        }
+
+
+        .top {
+            display: flex;
+
+            align-items: flex-end;
+
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+
+        .top h2 {
+            margin-top: 5px;
+
+            font-size: 31px;
+        }
+
+
+        .top p {
+            margin-top: 7px;
+
+            color: #68756f;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           LIVE STATUS
+        ========================= */
+
+        .live-box {
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            background: white;
+
+            border: 1px solid #dce7e3;
+
+            border-radius: 10px;
+
+            padding: 10px 13px;
+
+            font-size: 11px;
+
+            color: #50605a;
+        }
+
+
+        .live-dot {
+            width: 9px;
+            height: 9px;
+
+            border-radius: 50%;
+
+            background: #1b9c68;
+
+            box-shadow: 0 0 0 4px #e4f6ed;
+        }
+
+
+        /* =========================
+           STAT CARDS
+        ========================= */
+
+        .stats {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 14px;
+
+            margin: 25px 0;
+        }
+
+
+        .stat {
+            background: white;
+
+            border: 1px solid #dce7e3;
+
+            border-radius: 15px;
+
+            padding: 18px;
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        .stat-top {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+        }
+
+
+        .stat-icon {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 10px;
+
+            background: #e7f4ef;
+
+            color: #01714e;
+
+            display: grid;
+
+            place-items: center;
+
+            font-size: 17px;
+
+            font-weight: 800;
+        }
+
+
+        .stat span {
+            display: block;
+
+            margin-top: 13px;
+
+            font-size: 11px;
+
+            color: #74807b;
+        }
+
+
+        .stat strong {
+            display: block;
+
+            font-size: 28px;
+
+            margin-top: 4px;
+        }
+
+
+        .stat small {
+            display: block;
+
+            margin-top: 6px;
+
+            color: #7b8782;
+
+            font-size: 10px;
+        }
+
+
+        /* =========================
+           GRID
+        ========================= */
+
+        .dashboard-grid {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 16px;
+
+            margin-bottom: 16px;
+        }
+
+
+        .card {
+            background: white;
+
+            border: 1px solid #dce7e3;
+
+            border-radius: 16px;
+
+            overflow: hidden;
+        }
+
+
+        .card-header {
+            padding: 18px 19px;
+
+            border-bottom: 1px solid #edf1ef;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+
+        .card-header h3 {
+            font-size: 15px;
+        }
+
+
+        .card-header p {
+            font-size: 10px;
+
+            color: #7b8782;
+
+            margin-top: 4px;
+        }
+
+
+        .card-body {
+            padding: 19px;
+        }
+
+
+        /* =========================
+           PRIORITY
+        ========================= */
+
+        .priority-row {
+            margin-bottom: 16px;
+        }
+
+
+        .priority-row:last-child {
+            margin-bottom: 0;
+        }
+
+
+        .priority-info {
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 7px;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+
+        .bar {
+            height: 9px;
+
+            background: #edf3f0;
+
+            border-radius: 999px;
+
+            overflow: hidden;
+        }
+
+
+        .bar-fill {
+            height: 100%;
+
+            background: #01714e;
+
+            border-radius: 999px;
+
+            width: 0;
+
+            transition: width .5s ease;
+        }
+
+
+        .priority-count {
+            color: #697670;
+        }
+
+
+        /* =========================
+           BUILDINGS
+        ========================= */
+
+        .building-row {
+            display: grid;
+
+            grid-template-columns: 125px 1fr 35px;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 13px;
+        }
+
+
+        .building-row:last-child {
+            margin-bottom: 0;
+        }
+
+
+        .building-name {
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+
+        .building-bar {
+            height: 8px;
+
+            background: #edf3f0;
+
+            border-radius: 999px;
+
+            overflow: hidden;
+        }
+
+
+        .building-fill {
+            height: 100%;
+
+            background: #01714e;
+
+            border-radius: 999px;
+
+            width: 0;
+
+            transition: width .5s ease;
+        }
+
+
+        .building-count {
+            text-align: right;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            color: #50605a;
+        }
+
+
+        /* =========================
+           RECENT REPORTS
+        ========================= */
+
+        .recent-card {
+            margin-bottom: 16px;
+        }
+
+
+        .table {
+            width: 100%;
+        }
+
+
+        .table-head,
+        .table-row {
+            display: grid;
+
+            grid-template-columns:
+                1.7fr
+                1fr
+                .8fr
+                .8fr
+                1fr;
+
+            gap: 12px;
+
+            align-items: center;
+
+            padding: 13px 18px;
+        }
+
+
+        .table-head {
+            background: #f7faf9;
+
+            color: #6b7772;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: .06em;
+        }
+
+
+        .table-row {
+            border-top: 1px solid #edf1ef;
+
+            font-size: 11px;
+        }
+
+
+        .issue-title {
+            font-weight: 700;
+        }
+
+
+        .muted {
+            color: #7a8580;
+
+            font-size: 10px;
+
+            margin-top: 3px;
+        }
+
+
+        /* =========================
+           BADGES
+        ========================= */
+
+        .badge {
+            display: inline-flex;
+
+            padding: 5px 8px;
+
+            border-radius: 999px;
+
+            font-size: 9px;
+
+            font-weight: 800;
+        }
+
+
+        .open {
+            background: #ffe8e8;
+
+            color: #b42318;
+        }
+
+
+        .progress {
+            background: #fff1d6;
+
+            color: #9a6700;
+        }
+
+
+        .resolved {
+            background: #e4f6ea;
+
+            color: #18794e;
+        }
+
+
+        .low,
+        .medium {
+            background: #eef3f1;
+
+            color: #50605a;
+        }
+
+
+        .high {
+            background: #fff1d9;
+
+            color: #995c00;
+        }
+
+
+        .urgent {
+            background: #ffe4ec;
+
+            color: #b4235e;
+        }
+
+
+        /* =========================
+           QUICK ACTIONS
+        ========================= */
+
+        .quick-actions {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 12px;
+        }
+
+
+        .quick-action {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 14px;
+
+            border: 1px solid #dce7e3;
+
+            border-radius: 11px;
+
+            text-decoration: none;
+
+            color: #1c2824;
+
+            background: white;
+
+            transition: .18s;
+        }
+
+
+        .quick-action:hover {
+            border-color: #01714e;
+
+            background: #f7fcfa;
+
+            transform: translateY(-1px);
+        }
+
+
+        .quick-icon {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 9px;
+
+            background: #e7f4ef;
+
+            color: #01714e;
+
+            display: grid;
+
+            place-items: center;
+
+            font-size: 17px;
+        }
+
+
+        .quick-action strong {
+            display: block;
+
+            font-size: 11px;
+        }
+
+
+        .quick-action span {
+            display: block;
+
+            margin-top: 3px;
+
+            color: #7a8580;
+
+            font-size: 9px;
+        }
+
+
+        /* =========================
+           EMPTY
+        ========================= */
+
+        .empty {
+            padding: 30px;
+
+            text-align: center;
+
+            color: #7b8682;
+
+            font-size: 12px;
+        }
+
+
+        .error {
+            padding: 20px;
+
+            color: #b42318;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media(max-width: 900px) {
+
+            .nav {
+                display: none;
+            }
+
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+
+            .table {
+                overflow-x: auto;
+            }
+
+
+            .table-head,
+            .table-row {
+                min-width: 800px;
+            }
+
+
+            .top {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+        }
+
+
+        @media(max-width: 550px) {
+
+            .header {
+                padding: 0 16px;
+            }
+
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+
+            .logo p {
+                display: none;
+            }
+
+
+            .building-row {
+                grid-template-columns: 100px 1fr 30px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="header">
+
+    <a class="logo" href="index.html">
+
+        <div class="logo-icon">
+            M
+        </div>
+
+        <div>
+
+            <h1>
+                MaintainX
+            </h1>
+
+            <p>
+                Smart campus maintenance
+            </p>
+
+        </div>
+
+    </a>
+
+
+    <nav class="nav">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="Map/index.html">
+            Map
+        </a>
+
+        <a href="reports.html">
+            Reports
+        </a>
+
+        <a href="dashboard.html" class="active">
+            Dashboard
+        </a>
+
+        <a href="report.html">
+            Report Issue
+        </a>
+
+    </nav>
+
+
+    <a
+        class="login"
+        id="authButton"
+        href="login.html"
+    >
+        Login
+    </a>
+
+</header>
+
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="wrap">
+
+
+    <!-- TITLE -->
+
+    <div class="top">
+
+        <div>
+
+            <div class="kicker">
+                CAMPUS OVERVIEW
+            </div>
+
+            <h2>
+                Maintenance Dashboard
+            </h2>
+
+            <p>
+                Monitor campus maintenance issues and their current status.
+            </p>
+
+        </div>
+
+
+        <div class="live-box">
+
+            <div class="live-dot"></div>
+
+            <span>
+                Live data
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         STATISTICS
+    ========================= -->
+
+    <section class="stats">
+
+
+        <div class="stat">
+
+            <div class="stat-top">
+
+                <div>
+                    <span>
+                        TOTAL REPORTS
+                    </span>
+                </div>
+
+                <div class="stat-icon">
+                    #
+                </div>
+
+            </div>
+
+            <strong id="totalCount">
+                0
+            </strong>
+
+            <small>
+                All submitted issues
+            </small>
+
+        </div>
+
+
+
+        <div class="stat">
+
+            <div class="stat-top">
+
+                <div>
+                    <span>
+                        OPEN
+                    </span>
+                </div>
+
+                <div class="stat-icon">
+                    !
+                </div>
+
+            </div>
+
+            <strong id="openCount">
+                0
+            </strong>
+
+            <small>
+                Waiting for action
+            </small>
+
+        </div>
+
+
+
+        <div class="stat">
+
+            <div class="stat-top">
+
+                <div>
+                    <span>
+                        IN PROGRESS
+                    </span>
+                </div>
+
+                <div class="stat-icon">
+                    ↻
+                </div>
+
+            </div>
+
+            <strong id="progressCount">
+                0
+            </strong>
+
+            <small>
+                Currently being handled
+            </small>
+
+        </div>
+
+
+
+        <div class="stat">
+
+            <div class="stat-top">
+
+                <div>
+                    <span>
+                        RESOLVED
+                    </span>
+                </div>
+
+                <div class="stat-icon">
+                    ✓
+                </div>
+
+            </div>
+
+            <strong id="resolvedCount">
+                0
+            </strong>
+
+            <small>
+                Successfully completed
+            </small>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         ANALYTICS
+    ========================= -->
+
+    <section class="dashboard-grid">
+
+
+        <!-- PRIORITY -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h3>
+                        Priority Distribution
+                    </h3>
+
+                    <p>
+                        Reports grouped by priority
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="card-body">
+
+
+                <div class="priority-row">
+
+                    <div class="priority-info">
+
+                        <span>
+                            Low
+                        </span>
+
+                        <span
+                            class="priority-count"
+                            id="lowCount"
+                        >
+                            0
+                        </span>
+
+                    </div>
+
+                    <div class="bar">
+
+                        <div
+                            class="bar-fill"
+                            id="lowBar"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="priority-row">
+
+                    <div class="priority-info">
+
+                        <span>
+                            Medium
+                        </span>
+
+                        <span
+                            class="priority-count"
+                            id="mediumCount"
+                        >
+                            0
+                        </span>
+
+                    </div>
+
+                    <div class="bar">
+
+                        <div
+                            class="bar-fill"
+                            id="mediumBar"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="priority-row">
+
+                    <div class="priority-info">
+
+                        <span>
+                            High
+                        </span>
+
+                        <span
+                            class="priority-count"
+                            id="highCount"
+                        >
+                            0
+                        </span>
+
+                    </div>
+
+                    <div class="bar">
+
+                        <div
+                            class="bar-fill"
+                            id="highBar"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="priority-row">
+
+                    <div class="priority-info">
+
+                        <span>
+                            Urgent
+                        </span>
+
+                        <span
+                            class="priority-count"
+                            id="urgentCount"
+                        >
+                            0
+                        </span>
+
+                    </div>
+
+                    <div class="bar">
+
+                        <div
+                            class="bar-fill"
+                            id="urgentBar"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- BUILDINGS -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h3>
+                        Reports by Building
+                    </h3>
+
+                    <p>
+                        Issues reported across campus
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="card-body"
+                id="buildingStats"
+            >
+
+                <div class="empty">
+                    Loading building data...
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+ 
+
+
+    <!-- =========================
+         QUICK ACTIONS
+    ========================= -->
+
+    <section class="card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h3>
+                    Quick Actions
+                </h3>
+
+                <p>
+                    Frequently used campus management tools
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body">
+
+
+            <div class="quick-actions">
+
+
+                <a
+                    href="report.html"
+                    class="quick-action"
+                >
+
+                    <div class="quick-icon">
+                        +
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Report an Issue
+                        </strong>
+
+                        <span>
+                            Submit a new maintenance report
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="reports.html"
+                    class="quick-action"
+                >
+
+                    <div class="quick-icon">
+                        #
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            View All Reports
+                        </strong>
+
+                        <span>
+                            Search and manage submitted issues
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="Map/index.html"
+                    class="quick-action"
+                >
+
+                    <div class="quick-icon">
+                        ⌖
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Campus Map
+                        </strong>
+
+                        <span>
+                            Explore campus buildings and facilities
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =========================
+     FIREBASE
+========================= -->
+
+<script type="module">
+
+    import { auth, db } from "./firebase.js";
+
+    import {
+        onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+
+    import {
+        collection,
+        query,
+        orderBy,
+        onSnapshot
+    } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+
+    /* =========================
+       ELEMENTS
+    ========================= */
+
+    const totalCount =
+        document.getElementById("totalCount");
+
+    const openCount =
+        document.getElementById("openCount");
+
+    const progressCount =
+        document.getElementById("progressCount");
+
+    const resolvedCount =
+        document.getElementById("resolvedCount");
+
+    const recentRows =
+        document.getElementById("recentRows");
+
+    const buildingStats =
+        document.getElementById("buildingStats");
+
+
+    /* =========================
+       DATA
+    ========================= */
+
+    let reports = [];
+
+
+    /* =========================
+       ESCAPE HTML
+    ========================= */
+
+    const esc = value => {
+
+        return String(value ?? "")
+            .replace(/[&<>'"]/g, char => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                "'": "&#39;",
+                '"': "&quot;"
+            }[char]));
+
+    };
+
+
+    /* =========================
+       TIME FORMAT
+    ========================= */
+
+    const timeAgo = timestamp => {
+
+        if (!timestamp?.toDate) {
+
+            return "Just now";
+
+        }
+
+
+        const date =
+            timestamp.toDate();
+
+        const difference =
+            Math.max(
+                0,
+                Date.now() - date.getTime()
+            );
+
+
+        const minutes =
+            Math.floor(
+                difference / 60000
+            );
+
+
+        if (minutes < 1) {
+
+            return "Just now";
+
+        }
+
+
+        if (minutes < 60) {
+
+            return `${minutes}m ago`;
+
+        }
+
+
+        const hours =
+            Math.floor(
+                minutes / 60
+            );
+
+
+        if (hours < 24) {
+
+            return `${hours}h ago`;
+
+        }
+
+
+        return `${Math.floor(hours / 24)}d ago`;
+
+    };
+
+
+    /* =========================
+       STATUS CLASS
+    ========================= */
+
+    const statusClass = status => {
+
+        if (status === "Resolved") {
+
+            return "resolved";
+
+        }
+
+
+        if (status === "In Progress") {
+
+            return "progress";
+
+        }
+
+
+        return "open";
+
+    };
+
+
+    /* =========================
+       PRIORITY CLASS
+    ========================= */
+
+    const priorityClass = priority => {
+
+        if (priority === "Urgent") {
+
+            return "urgent";
+
+        }
+
+
+        if (priority === "High") {
+
+            return "high";
+
+        }
+
+
+        if (priority === "Medium") {
+
+            return "medium";
+
+        }
+
+
+        return "low";
+
+    };
+
+
+    /* =========================
+       UPDATE STATISTICS
+    ========================= */
+
+    function updateStatistics() {
+
+        const total =
+            reports.length;
+
+
+        const open =
+            reports.filter(
+                report =>
+                    (report.status || "Open")
+                    === "Open"
+            ).length;
+
+
+        const progress =
+            reports.filter(
+                report =>
+                    report.status
+                    === "In Progress"
+            ).length;
+
+
+        const resolved =
+            reports.filter(
+                report =>
+                    report.status
+                    === "Resolved"
+            ).length;
+
+
+        totalCount.textContent =
+            total;
+
+
+        openCount.textContent =
+            open;
+
+
+        progressCount.textContent =
+            progress;
+
+
+        resolvedCount.textContent =
+            resolved;
+
+    }
+
+
+    /* =========================
+       PRIORITY DISTRIBUTION
+    ========================= */
+
+    function updatePriorityStats() {
+
+        const priorities = {
+
+            Low: 0,
+
+            Medium: 0,
+
+            High: 0,
+
+            Urgent: 0
+
+        };
+
+
+        reports.forEach(report => {
+
+            const priority =
+                report.priority || "Low";
+
+
+            if (priorities[priority] !== undefined) {
+
+                priorities[priority]++;
+
+            }
+
+        });
+
+
+        const maximum =
+            Math.max(
+                1,
+                ...Object.values(priorities)
+            );
+
+
+        document.getElementById("lowCount")
+            .textContent =
+            priorities.Low;
+
+
+        document.getElementById("mediumCount")
+            .textContent =
+            priorities.Medium;
+
+
+        document.getElementById("highCount")
+            .textContent =
+            priorities.High;
+
+
+        document.getElementById("urgentCount")
+            .textContent =
+            priorities.Urgent;
+
+
+        document.getElementById("lowBar")
+            .style.width =
+            `${(priorities.Low / maximum) * 100}%`;
+
+
+        document.getElementById("mediumBar")
+            .style.width =
+            `${(priorities.Medium / maximum) * 100}%`;
+
+
+        document.getElementById("highBar")
+            .style.width =
+            `${(priorities.High / maximum) * 100}%`;
+
+
+        document.getElementById("urgentBar")
+            .style.width =
+            `${(priorities.Urgent / maximum) * 100}%`;
+
+    }
+
+
+    /* =========================
+       BUILDING STATISTICS
+    ========================= */
+
+    function updateBuildingStats() {
+
+        const buildings = {};
+
+
+        reports.forEach(report => {
+
+            const building =
+                report.building || "Unknown";
+
+
+            buildings[building] =
+                (buildings[building] || 0) + 1;
+
+        });
+
+
+        const entries =
+            Object.entries(buildings)
+                .sort(
+                    (a, b) => b[1] - a[1]
+                )
+                .slice(0, 8);
+
+
+        if (!entries.length) {
+
+            buildingStats.innerHTML =
+                `<div class="empty">
+                    No building data available.
+                </div>`;
+
+            return;
+
+        }
+
+
+        const maximum =
+            Math.max(
+                1,
+                ...entries.map(
+                    entry => entry[1]
+                )
+            );
+
+
+        buildingStats.innerHTML =
+            entries.map(
+                ([building, count]) => `
+
+                    <div class="building-row">
+
+                        <div class="building-name">
+                            ${esc(building)}
+                        </div>
+
+                        <div class="building-bar">
+
+                            <div
+                                class="building-fill"
+                                style="width:${(count / maximum) * 100}%"
+                            ></div>
+
+                        </div>
+
+                        <div class="building-count">
+                            ${count}
+                        </div>
+
+                    </div>
+
+                `
+            ).join("");
+
+    }
+
+
+    /* =========================
+       RECENT REPORTS
+    ========================= */
+
+    function updateRecentReports() {
+
+        const recent =
+            [...reports]
+                .sort(
+                    (a, b) => {
+
+                        const aTime =
+                            a.createdAt?.toDate?.()
+                                ?.getTime() || 0;
+
+                        const bTime =
+                            b.createdAt?.toDate?.()
+                                ?.getTime() || 0;
+
+                        return bTime - aTime;
+
+                    }
+                )
+                .slice(0, 8);
+
+
+        if (!recent.length) {
+
+            recentRows.innerHTML =
+                `<div class="empty">
+                    No reports have been submitted yet.
+                </div>`;
+
+            return;
+
+        }
+
+
+        recentRows.innerHTML =
+            recent.map(report => {
+
+                const status =
+                    report.status || "Open";
+
+
+                const priority =
+                    report.priority || "Low";
+
+
+                return `
+
+                    <div class="table-row">
+
+                        <div>
+
+                            <div class="issue-title">
+                                ${esc(
+                                    report.title ||
+                                    "Untitled issue"
+                                )}
+                            </div>
+
+                            <div class="muted">
+                                ${esc(
+                                    report.issueType ||
+                                    "Other"
+                                )}
+                                ·
+                                ${timeAgo(
+                                    report.createdAt
+                                )}
+                            </div>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                ${esc(
+                                    report.building ||
+                                    "—"
+                                )}
+                            </strong>
+
+                            <div class="muted">
+                                ${report.floor
+                                    ? `Floor ${esc(report.floor)}`
+                                    : ""}
+                            </div>
+
+                        </div>
+
+
+                        <div>
+
+                            <span
+                                class="badge ${priorityClass(priority)}"
+                            >
+                                ${esc(priority)}
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <span
+                                class="badge ${statusClass(status)}"
+                            >
+                                ${esc(status)}
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <div>
+                                ${esc(
+                                    report.reporterEmail ||
+                                    "Unknown"
+                                )}
+                            </div>
+
+                            <div class="muted">
+                                Reporter
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+    }
+
+
+    /* =========================
+       RENDER EVERYTHING
+    ========================= */
+
+    function renderDashboard() {
+
+        updateStatistics();
+
+        updatePriorityStats();
+
+        updateBuildingStats();
+
+        updateRecentReports();
+
+    }
+
+
+    /* =========================
+       AUTHENTICATION
+    ========================= */
+
+    onAuthStateChanged(
+        auth,
+        user => {
+
+            if (!user) {
+
+                window.location.href =
+                    "login.html";
+
+                return;
+
+            }
+
+
+            const authButton =
+                document.getElementById(
+                    "authButton"
+                );
+
+
+            authButton.textContent =
+                "👤";
+
+
+            authButton.href =
+                "user.html";
+
+
+            /* =========================
+               FIRESTORE
+            ========================= */
+
+            const reportsQuery =
+                query(
+                    collection(
+                        db,
+                        "reports"
+                    ),
+                    orderBy(
+                        "createdAt",
+                        "desc"
+                    )
+                );
+
+
+            onSnapshot(
+                reportsQuery,
+
+                snapshot => {
+
+                    reports =
+                        snapshot.docs.map(
+                            document => ({
+                                id: document.id,
+                                ...document.data()
+                            })
+                        );
+
+
+                    renderDashboard();
+
+                },
+
+
+                error => {
+
+                    console.error(
+                        "Dashboard error:",
+                        error
+                    );
+
+
+                    recentRows.innerHTML =
+                        `<div class="error">
+                            Unable to load reports.
+                            Check your Firestore rules
+                            and Firebase configuration.
+                        </div>`;
+
+                }
+            );
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

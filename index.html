@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MaintainX | Campus Maintenance</title>
+<title>ManageX | Campus Maintenance</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -388,9 +388,10 @@ button,input{font:inherit}
 
     <nav class="nav">
         <a class="active" href="index.html">Home</a>
-        <a href="Map/index.html">Map</a>
+        <a href="campuses.html">Map</a>
         <a href="reports.html">Reports</a>
-        <a href="#quick-actions">Dashboard</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="report.html">Report Issue</a> 
         <a href="#about">About</a>
     </nav>
 
@@ -424,7 +425,7 @@ button,input{font:inherit}
         </div>
 
         <div class="hero-buttons">
-            <a href="Map/index.html" class="btn btn-primary">Explore Campus Map</a>
+            <a href="campuses.html" class="btn btn-primary">Explore Campus Map</a>
             <a href="report.html" class="btn btn-secondary">Report an Issue</a>
         </div>
     </div>
@@ -482,7 +483,7 @@ button,input{font:inherit}
             <p>Manage and assign maintenance tasks.</p>
         </a>
 
-        <a href="Map/index.html" class="quick-card">
+        <a href="campuses.html" class="quick-card">
             <div class="q-icon orange">▣</div>
             <h3>Preventive Maintenance</h3>
             <p>Schedule routine checks before problems grow.</p>
@@ -561,8 +562,8 @@ const searchBtn = document.getElementById("searchBtn");
 function searchBuildings() {
     const query = searchInput.value.trim();
     window.location.href = query
-        ? `Map/index.html?search=${encodeURIComponent(query)}`
-        : "Map/index.html";
+        ? `campuses.html?search=${encodeURIComponent(query)}`
+        : "campuses.html";
 }
 
 searchBtn.addEventListener("click", searchBuildings);
@@ -646,7 +647,7 @@ document.getElementById("themeBtn").addEventListener("click", () => {
         recentList.innerHTML = snapshot.docs.map(doc => {
             const r = doc.data();
             const status = r.status || "Open";
-            const place = [r.building, r.floor ? `Floor ${r.floor}` : ""].filter(Boolean).join(" · ");
+            const place = [r.campusName || 'ITER Campus', r.building, r.floor ? `Floor ${r.floor}` : ""].filter(Boolean).join(" · ");
             return `<div class="issue">
                 <div class="issue-icon">${iconFor(r.issueType)}</div>
                 <div>

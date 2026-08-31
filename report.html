@@ -6,7 +6,7 @@
 
     <meta name="theme-color" content="#01714e">
 
-    <title>Report an Issue | ITER Campus Management</title>
+    <title>Report an Issue | ManageX</title>
 
     <style>
 
@@ -666,7 +666,7 @@
         <div>
 
             <div class="brand-title">
-                ITER Campus Management
+                ManageX Campus Management
             </div>
 
             <div class="brand-subtitle">
@@ -680,7 +680,7 @@
 
     <button
         class="back-button"
-        onclick="window.location.href='Map/index.html'"
+        onclick="window.location.href='campuses.html'"
     >
         ← Back to Map
     </button>
@@ -699,8 +699,7 @@
     </h1>
 
     <p class="page-subtitle">
-        Select the location and facility where the issue was found,
-        then provide the details below.
+        Choose the campus and affected facility, then provide the details below.
     </p>
 
 
@@ -733,161 +732,36 @@
         <div class="content">
 
 
+            <!-- CAMPUS -->
+
+            <section class="section">
+
+                <div class="section-heading">
+                    <span>Campus</span>
+                    <small>Select one</small>
+                </div>
+
+                <div class="location-grid" id="campusGrid">
+                    <div class="location-card selected" data-campus-id="iter">
+                        <div class="location-icon">I</div>
+                        <strong>ITER Campus</strong>
+                        <small>Siksha 'O' Anusandhan, Bhubaneswar</small>
+                    </div>
+                    <div id="campusLoading" style="grid-column:1/-1;color:#718079;font-size:12px;padding:8px 0;">Loading added campuses…</div>
+                </div>
+            </section>
+
             <!-- BUILDINGS -->
 
             <section class="section">
 
                 <div class="section-heading">
-
-                    <span>
-                        Building
-                    </span>
-
-                    <small>
-                        Select one
-                    </small>
-
+                    <span id="buildingHeading">Building</span>
+                    <small>Select one</small>
                 </div>
 
-
-                <div class="location-grid">
-
-                    <div class="location-card"
-                         data-building="A Block">
-
-                        <div class="location-icon">
-                            A
-                        </div>
-
-                        <strong>
-                            A Block
-                        </strong>
-
-                        <small>
-                            Academic block
-                        </small>
-
-                    </div>
-
-
-                    <div class="location-card"
-                         data-building="B Block">
-
-                        <div class="location-icon">
-                            B
-                        </div>
-
-                        <strong>
-                            B Block
-                        </strong>
-
-                        <small>
-                            Academic block
-                        </small>
-
-                    </div>
-
-
-                    <div class="location-card"
-                         data-building="C Block">
-
-                        <div class="location-icon">
-                            C
-                        </div>
-
-                        <strong>
-                            C Block
-                        </strong>
-
-                        <small>
-                            Academic block
-                        </small>
-
-                    </div>
-
-
-                    <div class="location-card"
-                         data-building="D Block">
-
-                        <div class="location-icon">
-                            D
-                        </div>
-
-                        <strong>
-                            D Block
-                        </strong>
-
-                        <small>
-                            Academic block
-                        </small>
-
-                    </div>
-
-
-                    <div class="location-card"
-                         data-building="E Block">
-
-                        <div class="location-icon">
-                            E
-                        </div>
-
-                        <strong>
-                            E Block
-                        </strong>
-
-                        <small>
-                            Academic block
-                        </small>
-
-                    </div>
-
-
-                    <div class="location-card"
-                         data-building="F Block">
-
-                        <div class="location-icon">
-                            F
-                        </div>
-
-                        <strong>
-                            F Block
-                        </strong>
-
-                        <small>
-                            Academic block
-                        </small>
-
-                    </div>
-
-
-                    <div class="location-card" data-building="Administrative Block">
-                        <div class="location-icon">AD</div>
-                        <strong>Administrative Block</strong>
-                        <small>Administration</small>
-                    </div>
-
-                    <div class="location-card" data-building="SC Block">
-                        <div class="location-icon">SC</div>
-                        <strong>SC Block</strong>
-                        <small>Academic block</small>
-                    </div>
-
-                    <div class="location-card" data-building="Basnuri Bhavan">
-                        <div class="location-icon">BB</div>
-                        <strong>Basnuri Bhavan</strong>
-                        <small>Campus facility</small>
-                    </div>
-
-                    <div class="location-card" data-building="Finance Department">
-                        <div class="location-icon">FD</div>
-                        <strong>Finance Department</strong>
-                        <small>Administration</small>
-                    </div>
-
-                </div>
-
+                <div class="location-grid" id="buildingGrid"></div>
             </section>
-
 
             <!-- FLOOR -->
 
@@ -1237,7 +1111,7 @@
             <button
                 class="cancel"
                 type="button"
-                onclick="window.location.href='Map/index.html'"
+                onclick="window.location.href='campuses.html'"
             >
                 Cancel
             </button>
@@ -1260,87 +1134,135 @@
 <script type="module">
     import { auth, db } from "./firebase.js";
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-    import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+    import {
+        collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, getDoc, doc
+    } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
     const params = new URLSearchParams(window.location.search);
+    const urlCampusId = params.get("campusId") || "iter";
     const urlBuilding = params.get("building");
     const urlLift = params.get("lift");
 
-    const buildingCards = [...document.querySelectorAll(".location-card")];
+    const campusGrid = document.getElementById("campusGrid");
+    const buildingGrid = document.getElementById("buildingGrid");
+    const campusLoading = document.getElementById("campusLoading");
     const floorButtons = [...document.querySelectorAll(".floor-button")];
     const issueButtons = [...document.querySelectorAll(".issue-card")];
     const priorityButtons = [...document.querySelectorAll(".priority")];
     const photoInput = document.querySelector('input[type="file"]');
     const submitButton = document.getElementById("submitButton");
 
+    const iterBuildings = [
+        ["A Block","A","Academic block"], ["B Block","B","Academic block"],
+        ["C Block","C","Academic block"], ["D Block","D","Academic block"],
+        ["E Block","E","Academic block"], ["F Block","F","Academic block"],
+        ["Administrative Block","AD","Administration"], ["SC Block","SC","Academic block"],
+        ["Basnuri Bhavan","BB","Campus facility"], ["Finance Department","FD","Administration"]
+    ];
+
+    let selectedCampus = null;
     let selectedBuilding = null;
     let selectedFloor = null;
     let selectedIssue = null;
     let selectedPriority = document.querySelector(".priority.selected")?.dataset.priority || "Low";
     let currentUser = null;
 
-    const selectOne = (items, selected, className = "selected") => {
-        items.forEach(item => item.classList.toggle(className, item === selected));
-    };
+    const selectOne = (items, selected, className = "selected") => items.forEach(item => item.classList.toggle(className, item === selected));
+    const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
-    buildingCards.forEach(card => {
-        card.addEventListener("click", () => {
-            selectedBuilding = card;
-            selectOne(buildingCards, card);
-        });
-    });
-
-    floorButtons.forEach(button => {
-        button.addEventListener("click", () => {
-            selectedFloor = button;
-            selectOne(floorButtons, button);
-        });
-    });
-
-    issueButtons.forEach(button => {
-        button.addEventListener("click", () => {
-            selectedIssue = button;
-            selectOne(issueButtons, button);
-        });
-    });
-
-    priorityButtons.forEach(button => {
-        button.addEventListener("click", () => {
-            selectedPriority = button.dataset.priority;
-            selectOne(priorityButtons, button);
-        });
-    });
-
-    if (urlBuilding) {
-        const card = buildingCards.find(c => c.dataset.building.toLowerCase() === urlBuilding.toLowerCase());
-        if (card) { selectedBuilding = card; selectOne(buildingCards, card); }
+    function renderBuildings(buildings) {
+        selectedBuilding = null;
+        buildingGrid.innerHTML = "";
+        if (!buildings.length) {
+            buildingGrid.innerHTML = '<div style="grid-column:1/-1;padding:18px;border:1px dashed #cbd9d3;border-radius:10px;color:#718079;font-size:12px;">This campus has no buildings yet. Add buildings from the Campus Map editor.</div>';
+            return;
+        }
+        for (const b of buildings) {
+            const name = Array.isArray(b) ? b[0] : (b.name || "Unnamed building");
+            const icon = Array.isArray(b) ? b[1] : name.split(/\s+/).map(x=>x[0]).join("").slice(0,2).toUpperCase();
+            const kind = Array.isArray(b) ? b[2] : "Campus facility";
+            const card = document.createElement("div");
+            card.className = "location-card";
+            card.dataset.building = name;
+            card.innerHTML = `<div class="location-icon">${esc(icon)}</div><strong>${esc(name)}</strong><small>${esc(kind)}</small>`;
+            card.addEventListener("click", () => { selectedBuilding = card; selectOne([...buildingGrid.querySelectorAll('.location-card')], card); });
+            buildingGrid.appendChild(card);
+        }
+        if (urlBuilding) {
+            const wanted = [...buildingGrid.querySelectorAll('.location-card')].find(c => c.dataset.building.toLowerCase() === urlBuilding.toLowerCase());
+            if (wanted) { selectedBuilding = wanted; selectOne([...buildingGrid.querySelectorAll('.location-card')], wanted); }
+        }
     }
+
+    function addCampusCard(id, name, location, description) {
+        if ([...campusGrid.querySelectorAll('[data-campus-id]')].some(c => c.dataset.campusId === id)) return;
+        const card = document.createElement('div');
+        card.className = 'location-card';
+        card.dataset.campusId = id;
+        card.innerHTML = `<div class="location-icon">+</div><strong>${esc(name)}</strong><small>${esc(location || description || 'Custom campus')}</small>`;
+        card.addEventListener('click', () => chooseCampus(id, name, location, description));
+        campusGrid.appendChild(card);
+    }
+
+    async function chooseCampus(id, name, location, description, preloaded=null) {
+        selectedCampus = { id, name, location, description };
+        const cards = [...campusGrid.querySelectorAll('[data-campus-id]')];
+        const active = cards.find(c => c.dataset.campusId === id);
+        selectOne(cards, active);
+        document.querySelector('.brand-subtitle').textContent = `${name} · grievance reporting`;
+        document.querySelector('.back-button').setAttribute('onclick', `window.location.href='${id === 'iter' ? 'Map/index.html' : `campus.html?id=${encodeURIComponent(id)}`} '`);
+        if (id === 'iter') {
+            renderBuildings(iterBuildings);
+            return;
+        }
+        try {
+            const campusData = preloaded || (await getDoc(doc(db,'campuses',id))).data();
+            const buildings = (campusData?.objects || []).filter(o => o.type === 'building');
+            renderBuildings(buildings);
+        } catch (e) {
+            console.error(e);
+            renderBuildings([]);
+        }
+    }
+
+    // Floor / issue / priority interactions remain the same.
+    floorButtons.forEach(button => button.addEventListener("click", () => { selectedFloor = button; selectOne(floorButtons, button); }));
+    issueButtons.forEach(button => button.addEventListener("click", () => { selectedIssue = button; selectOne(issueButtons, button); }));
+    priorityButtons.forEach(button => button.addEventListener("click", () => { selectedPriority = button.dataset.priority; selectOne(priorityButtons, button); }));
+
+    let campusDocs = [];
+    onAuthStateChanged(auth, user => {
+        currentUser = user || null;
+        if (!currentUser) return;
+
+        onSnapshot(query(collection(db,'campuses'), orderBy('createdAt','desc')), snap => {
+            campusLoading?.remove();
+            campusDocs = snap.docs.map(d => ({id:d.id,...d.data()}));
+            campusDocs.forEach(c => addCampusCard(c.id, c.name, c.location, c.description));
+            const requested = campusDocs.find(c => c.id === urlCampusId);
+            if (requested) chooseCampus(requested.id, requested.name, requested.location, requested.description, requested);
+            else chooseCampus('iter', 'ITER Campus', "Siksha 'O' Anusandhan, Bhubaneswar", 'ITER Campus');
+        }, err => {
+            console.error(err);
+            campusLoading.textContent = 'Could not load added campuses. ITER remains available.';
+            chooseCampus('iter', 'ITER Campus', "Siksha 'O' Anusandhan, Bhubaneswar", 'ITER Campus');
+        });
+    });
 
     if (urlLift) {
         document.getElementById("specificLocation").value = `Lift ${urlLift}`;
         document.getElementById("issueTitle").value = "Lift not working";
         const issue = document.querySelector('[data-issue="Lift malfunction"]');
         if (issue) { selectedIssue = issue; selectOne(issueButtons, issue); }
-        // Mark a sensible prototype default for lift reports.
         const high = document.querySelector('[data-priority="High"]');
         if (high) { selectedPriority = high.dataset.priority; selectOne(priorityButtons, high); }
     }
 
     const setStatus = (text, isError = false) => {
         let status = document.getElementById("submitStatus");
-        if (!status) {
-            status = document.createElement("p");
-            status.id = "submitStatus";
-            status.style.cssText = "margin:12px 0 0; font-size:13px; font-weight:600;";
-            submitButton.parentElement.insertBefore(status, submitButton);
-        }
-        status.textContent = text;
-        status.style.color = isError ? "#b42318" : "#01714e";
+        if (!status) { status = document.createElement("p"); status.id = "submitStatus"; status.style.cssText = "margin:12px 0 0; font-size:13px; font-weight:600;"; submitButton.parentElement.insertBefore(status, submitButton); }
+        status.textContent = text; status.style.color = isError ? "#b42318" : "#01714e";
     };
-
-    onAuthStateChanged(auth, user => {
-        currentUser = user || null;
-    });
 
     submitButton.addEventListener("click", async () => {
         const title = document.getElementById("issueTitle").value.trim();
@@ -1350,21 +1272,20 @@
         const floor = selectedFloor?.dataset.floor || null;
         const issueType = selectedIssue?.dataset.issue || null;
 
-        if (!currentUser) {
-            setStatus("Please log in before submitting an issue.", true);
-            return;
-        }
-        if (!building) { setStatus("Please select a building.", true); return; }
-        if (!floor) { setStatus("Please select a floor.", true); return; }
-        if (!issueType) { setStatus("Please select an issue type.", true); return; }
-        if (!title || !description) { setStatus("Please enter an issue title and description.", true); return; }
+        if (!currentUser) return setStatus("Please log in before submitting an issue.", true);
+        if (!selectedCampus) return setStatus("Please select a campus.", true);
+        if (!building) return setStatus("Please select a building.", true);
+        if (!floor) return setStatus("Please select a floor.", true);
+        if (!issueType) return setStatus("Please select an issue type.", true);
+        if (!title || !description) return setStatus("Please enter an issue title and description.", true);
 
         submitButton.disabled = true;
         submitButton.textContent = "Submitting…";
         setStatus("Saving your report…");
-
         try {
             await addDoc(collection(db, "reports"), {
+                campusId: selectedCampus.id,
+                campusName: selectedCampus.name,
                 building,
                 floor,
                 issueType,
@@ -1378,7 +1299,6 @@
                 createdAt: serverTimestamp(),
                 updatedAt: serverTimestamp()
             });
-
             setStatus("Issue submitted successfully. Redirecting to Reports…");
             setTimeout(() => { window.location.href = "reports.html"; }, 800);
         } catch (error) {
