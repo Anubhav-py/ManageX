@@ -1,4 +1,4 @@
-# MaintainX
+# ManageX
 
 Campus maintenance and grievance reporting frontend.
 
@@ -37,7 +37,7 @@ http://localhost:5500/
 
 ## Firebase
 
-MaintainX uses **Firebase Authentication** for login and signup.
+ManageX uses **Firebase Authentication** for login and signup.
 
 No Firebase or npm installation is required. The Firebase Web SDK is loaded directly from Google's CDN.
 

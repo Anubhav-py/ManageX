@@ -1,4 +1,4 @@
-# MaintainX backend setup
+# ManageX backend setup
 
 1. `firebase.js` uses the new `maintai-x-f1` Firebase project.
 2. Enable Authentication > Email/Password.
