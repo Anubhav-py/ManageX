@@ -538,7 +538,7 @@ button,input{font:inherit}
 <section class="section" id="about">
     <div class="report">
         <div>
-            <div class="label" style="color:#d9eee7">MAINTAINX</div>
+            <div class="label" style="color:#d9eee7">MANAGEX</div>
             <h2>One place for a better maintained campus.</h2>
             <p>
                 Building information, maintenance requests, issue reporting
@@ -647,12 +647,12 @@ document.getElementById("themeBtn").addEventListener("click", () => {
         recentList.innerHTML = snapshot.docs.map(doc => {
             const r = doc.data();
             const status = r.status || "Open";
-            const place = [r.campusName || 'ITER Campus', r.building, r.floor ? `Floor ${r.floor}` : ""].filter(Boolean).join(" · ");
+            const place = [r.building, r.floor ? `Floor ${r.floor}` : ""].filter(Boolean).join(" · ");
             return `<div class="issue">
                 <div class="issue-icon">${iconFor(r.issueType)}</div>
                 <div>
                     <h3>${escapeHtml(r.title || "Untitled issue")}</h3>
-                    <p>${escapeHtml(place || "Campus") } · Reported ${timeText(r.createdAt)}</p>
+                    <p>${escapeHtml([r.campusName || "ITER Campus", place].filter(Boolean).join(" · "))} · Reported ${timeText(r.createdAt)}</p>
                 </div>
                 <span class="status ${statusClass(status)}">${escapeHtml(status)}</span>
             </div>`;

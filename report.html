@@ -6,7 +6,7 @@
 
     <meta name="theme-color" content="#01714e">
 
-    <title>Report an Issue | ManageX</title>
+    <title>Report an Issue | ITER Campus Management</title>
 
     <style>
 
@@ -666,7 +666,7 @@
         <div>
 
             <div class="brand-title">
-                ManageX Campus Management
+                ITER Campus Management
             </div>
 
             <div class="brand-subtitle">
@@ -680,7 +680,7 @@
 
     <button
         class="back-button"
-        onclick="window.location.href='campuses.html'"
+        onclick="window.location.href='Map/index.html'"
     >
         ← Back to Map
     </button>
@@ -699,7 +699,8 @@
     </h1>
 
     <p class="page-subtitle">
-        Choose the campus and affected facility, then provide the details below.
+        Select the location and facility where the issue was found,
+        then provide the details below.
     </p>
 
 
@@ -741,27 +742,36 @@
                     <small>Select one</small>
                 </div>
 
-                <div class="location-grid" id="campusGrid">
-                    <div class="location-card selected" data-campus-id="iter">
-                        <div class="location-icon">I</div>
-                        <strong>ITER Campus</strong>
-                        <small>Siksha 'O' Anusandhan, Bhubaneswar</small>
-                    </div>
-                    <div id="campusLoading" style="grid-column:1/-1;color:#718079;font-size:12px;padding:8px 0;">Loading added campuses…</div>
-                </div>
+                <select id="campusSelect" style="width:100%;padding:12px 13px;border:1px solid #dce6e1;border-radius:10px;background:white;font:inherit;font-size:12px;color:#1c2824;outline:none;cursor:pointer;">
+                    <option value="">Loading campuses…</option>
+                </select>
+
             </section>
+
 
             <!-- BUILDINGS -->
 
             <section class="section">
 
                 <div class="section-heading">
-                    <span id="buildingHeading">Building</span>
-                    <small>Select one</small>
+
+                    <span>
+                        Building
+                    </span>
+
+                    <small>
+                        Select one
+                    </small>
+
                 </div>
 
-                <div class="location-grid" id="buildingGrid"></div>
+
+                <div class="location-grid" id="buildingGrid">
+                    <div style="grid-column:1/-1;padding:20px;border:1px dashed #dce6e1;border-radius:10px;text-align:center;color:#7b8983;font-size:11px;">Choose a campus to load its buildings.</div>
+                </div>
+
             </section>
+
 
             <!-- FLOOR -->
 
@@ -1111,7 +1121,7 @@
             <button
                 class="cancel"
                 type="button"
-                onclick="window.location.href='campuses.html'"
+                onclick="window.location.href='Map/index.html'"
             >
                 Cancel
             </button>
@@ -1134,120 +1144,133 @@
 <script type="module">
     import { auth, db } from "./firebase.js";
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-    import {
-        collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, getDoc, doc
-    } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+    import { collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
     const params = new URLSearchParams(window.location.search);
-    const urlCampusId = params.get("campusId") || "iter";
+    const urlCampusId = params.get("campusId");
     const urlBuilding = params.get("building");
     const urlLift = params.get("lift");
 
-    const campusGrid = document.getElementById("campusGrid");
+    const campusSelect = document.getElementById("campusSelect");
     const buildingGrid = document.getElementById("buildingGrid");
-    const campusLoading = document.getElementById("campusLoading");
     const floorButtons = [...document.querySelectorAll(".floor-button")];
     const issueButtons = [...document.querySelectorAll(".issue-card")];
     const priorityButtons = [...document.querySelectorAll(".priority")];
     const photoInput = document.querySelector('input[type="file"]');
     const submitButton = document.getElementById("submitButton");
 
-    const iterBuildings = [
-        ["A Block","A","Academic block"], ["B Block","B","Academic block"],
-        ["C Block","C","Academic block"], ["D Block","D","Academic block"],
-        ["E Block","E","Academic block"], ["F Block","F","Academic block"],
-        ["Administrative Block","AD","Administration"], ["SC Block","SC","Academic block"],
-        ["Basnuri Bhavan","BB","Campus facility"], ["Finance Department","FD","Administration"]
-    ];
-
-    let selectedCampus = null;
+    let campuses = [{ id: "iter", name: "ITER Campus", type: "iter" }];
+    let selectedCampus = campuses[0];
+    let buildingCards = [];
     let selectedBuilding = null;
     let selectedFloor = null;
     let selectedIssue = null;
     let selectedPriority = document.querySelector(".priority.selected")?.dataset.priority || "Low";
     let currentUser = null;
 
-    const selectOne = (items, selected, className = "selected") => items.forEach(item => item.classList.toggle(className, item === selected));
-    const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+    const selectOne = (items, selected, className = "selected") => {
+        items.forEach(item => item.classList.toggle(className, item === selected));
+    };
 
-    function renderBuildings(buildings) {
-        selectedBuilding = null;
+    const setStatus = (text, isError = false) => {
+        let status = document.getElementById("submitStatus");
+        if (!status) {
+            status = document.createElement("p");
+            status.id = "submitStatus";
+            status.style.cssText = "margin:12px 0 0; font-size:13px; font-weight:600;";
+            submitButton.parentElement.insertBefore(status, submitButton);
+        }
+        status.textContent = text;
+        status.style.color = isError ? "#b42318" : "#01714e";
+    };
+
+    const esc = value => String(value ?? "").replace(/[&<>'"]/g, ch => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'
+    }[ch]));
+
+    function campusDisplayName(c) { return c?.name || "Unnamed Campus"; }
+
+    function makeBuildingCards(buildings) {
         buildingGrid.innerHTML = "";
+        buildingCards = [];
         if (!buildings.length) {
-            buildingGrid.innerHTML = '<div style="grid-column:1/-1;padding:18px;border:1px dashed #cbd9d3;border-radius:10px;color:#718079;font-size:12px;">This campus has no buildings yet. Add buildings from the Campus Map editor.</div>';
+            buildingGrid.innerHTML = `<div style="grid-column:1/-1;padding:20px;border:1px dashed #dce6e1;border-radius:10px;text-align:center;color:#7b8983;font-size:11px;">No buildings have been added to this campus yet.</div>`;
+            selectedBuilding = null;
             return;
         }
-        for (const b of buildings) {
-            const name = Array.isArray(b) ? b[0] : (b.name || "Unnamed building");
-            const icon = Array.isArray(b) ? b[1] : name.split(/\s+/).map(x=>x[0]).join("").slice(0,2).toUpperCase();
-            const kind = Array.isArray(b) ? b[2] : "Campus facility";
+
+        const icons = ["A","B","C","D","E","F","L","H","C","F"];
+        buildings.forEach((building, index) => {
             const card = document.createElement("div");
             card.className = "location-card";
-            card.dataset.building = name;
-            card.innerHTML = `<div class="location-icon">${esc(icon)}</div><strong>${esc(name)}</strong><small>${esc(kind)}</small>`;
-            card.addEventListener("click", () => { selectedBuilding = card; selectOne([...buildingGrid.querySelectorAll('.location-card')], card); });
+            card.dataset.building = building.name || `Building ${index + 1}`;
+            card.innerHTML = `
+                <div class="location-icon">${esc((building.name || "B").slice(0, 2).toUpperCase())}</div>
+                <strong>${esc(building.name || `Building ${index + 1}`)}</strong>
+                <small>${selectedCampus.type === "iter" ? "ITER facility" : "Campus facility"}</small>
+            `;
+            card.addEventListener("click", () => {
+                selectedBuilding = card;
+                selectOne(buildingCards, card);
+            });
             buildingGrid.appendChild(card);
-        }
-        if (urlBuilding) {
-            const wanted = [...buildingGrid.querySelectorAll('.location-card')].find(c => c.dataset.building.toLowerCase() === urlBuilding.toLowerCase());
-            if (wanted) { selectedBuilding = wanted; selectOne([...buildingGrid.querySelectorAll('.location-card')], wanted); }
-        }
-    }
-
-    function addCampusCard(id, name, location, description) {
-        if ([...campusGrid.querySelectorAll('[data-campus-id]')].some(c => c.dataset.campusId === id)) return;
-        const card = document.createElement('div');
-        card.className = 'location-card';
-        card.dataset.campusId = id;
-        card.innerHTML = `<div class="location-icon">+</div><strong>${esc(name)}</strong><small>${esc(location || description || 'Custom campus')}</small>`;
-        card.addEventListener('click', () => chooseCampus(id, name, location, description));
-        campusGrid.appendChild(card);
-    }
-
-    async function chooseCampus(id, name, location, description, preloaded=null) {
-        selectedCampus = { id, name, location, description };
-        const cards = [...campusGrid.querySelectorAll('[data-campus-id]')];
-        const active = cards.find(c => c.dataset.campusId === id);
-        selectOne(cards, active);
-        document.querySelector('.brand-subtitle').textContent = `${name} · grievance reporting`;
-        document.querySelector('.back-button').setAttribute('onclick', `window.location.href='${id === 'iter' ? 'Map/index.html' : `campus.html?id=${encodeURIComponent(id)}`} '`);
-        if (id === 'iter') {
-            renderBuildings(iterBuildings);
-            return;
-        }
-        try {
-            const campusData = preloaded || (await getDoc(doc(db,'campuses',id))).data();
-            const buildings = (campusData?.objects || []).filter(o => o.type === 'building');
-            renderBuildings(buildings);
-        } catch (e) {
-            console.error(e);
-            renderBuildings([]);
-        }
-    }
-
-    // Floor / issue / priority interactions remain the same.
-    floorButtons.forEach(button => button.addEventListener("click", () => { selectedFloor = button; selectOne(floorButtons, button); }));
-    issueButtons.forEach(button => button.addEventListener("click", () => { selectedIssue = button; selectOne(issueButtons, button); }));
-    priorityButtons.forEach(button => button.addEventListener("click", () => { selectedPriority = button.dataset.priority; selectOne(priorityButtons, button); }));
-
-    let campusDocs = [];
-    onAuthStateChanged(auth, user => {
-        currentUser = user || null;
-        if (!currentUser) return;
-
-        onSnapshot(query(collection(db,'campuses'), orderBy('createdAt','desc')), snap => {
-            campusLoading?.remove();
-            campusDocs = snap.docs.map(d => ({id:d.id,...d.data()}));
-            campusDocs.forEach(c => addCampusCard(c.id, c.name, c.location, c.description));
-            const requested = campusDocs.find(c => c.id === urlCampusId);
-            if (requested) chooseCampus(requested.id, requested.name, requested.location, requested.description, requested);
-            else chooseCampus('iter', 'ITER Campus', "Siksha 'O' Anusandhan, Bhubaneswar", 'ITER Campus');
-        }, err => {
-            console.error(err);
-            campusLoading.textContent = 'Could not load added campuses. ITER remains available.';
-            chooseCampus('iter', 'ITER Campus', "Siksha 'O' Anusandhan, Bhubaneswar", 'ITER Campus');
+            buildingCards.push(card);
         });
-    });
+
+        if (urlBuilding) {
+            const target = buildingCards.find(c => c.dataset.building.toLowerCase() === urlBuilding.toLowerCase());
+            if (target) { selectedBuilding = target; selectOne(buildingCards, target); }
+        }
+    }
+
+    function renderCampusOptions() {
+        campusSelect.innerHTML = campuses.map(c => `<option value="${esc(c.id)}">${esc(campusDisplayName(c))}</option>`).join("");
+        const desired = campuses.find(c => c.id === (urlCampusId || "iter")) || campuses[0];
+        campusSelect.value = desired.id;
+        loadSelectedCampus(desired.id);
+    }
+
+    async function loadSelectedCampus(campusId) {
+        const campus = campuses.find(c => c.id === campusId);
+        if (!campus) return;
+        selectedCampus = campus;
+        selectedBuilding = null;
+        if (campus.type === "iter") {
+            const iterNames = [
+                ["A Block","Academic block"],["B Block","Academic block"],["C Block","Academic block"],["D Block","Academic block"],["E Block","Academic block"],["F Block","Academic block"],
+                ["Administrative Block","Administration"],["SC Block","Academic block"],["Basnuri Bhavan","Campus facility"],["Finance Department","Administration"]
+            ];
+            makeBuildingCards(iterNames.map(([name]) => ({name})));
+            document.querySelector(".brand-subtitle").textContent = "Interactive campus facilities management";
+        } else {
+            try {
+                const snap = await getDoc(doc(db, "campuses", campus.id));
+                const data = snap.exists() ? snap.data() : {};
+                const buildings = (data.objects || []).filter(o => o.type === "building" && o.name);
+                makeBuildingCards(buildings);
+            } catch (e) {
+                console.error(e);
+                buildingGrid.innerHTML = `<div style="grid-column:1/-1;padding:20px;border:1px solid #f0cbc6;border-radius:10px;text-align:center;color:#b42318;font-size:11px;">Unable to load buildings for this campus.</div>`;
+            }
+        }
+    }
+
+    floorButtons.forEach(button => button.addEventListener("click", () => {
+        selectedFloor = button;
+        selectOne(floorButtons, button);
+    }));
+
+    issueButtons.forEach(button => button.addEventListener("click", () => {
+        selectedIssue = button;
+        selectOne(issueButtons, button);
+    }));
+
+    priorityButtons.forEach(button => button.addEventListener("click", () => {
+        selectedPriority = button.dataset.priority;
+        selectOne(priorityButtons, button);
+    }));
+
+    campusSelect.addEventListener("change", () => loadSelectedCampus(campusSelect.value));
 
     if (urlLift) {
         document.getElementById("specificLocation").value = `Lift ${urlLift}`;
@@ -1258,11 +1281,23 @@
         if (high) { selectedPriority = high.dataset.priority; selectOne(priorityButtons, high); }
     }
 
-    const setStatus = (text, isError = false) => {
-        let status = document.getElementById("submitStatus");
-        if (!status) { status = document.createElement("p"); status.id = "submitStatus"; status.style.cssText = "margin:12px 0 0; font-size:13px; font-weight:600;"; submitButton.parentElement.insertBefore(status, submitButton); }
-        status.textContent = text; status.style.color = isError ? "#b42318" : "#01714e";
-    };
+    onAuthStateChanged(auth, user => {
+        currentUser = user || null;
+        if (!user) setStatus("Please log in before submitting an issue.", true);
+    });
+
+    // Load user-created campuses. ITER stays hard-coded so its existing map/report setup is preserved.
+    onAuthStateChanged(auth, user => {
+        if (!user) return;
+        onSnapshot(query(collection(db, "campuses"), orderBy("createdAt", "desc")), snapshot => {
+            campuses = [{ id: "iter", name: "ITER Campus", type: "iter" }, ...snapshot.docs.map(d => ({ id:d.id, ...d.data(), type:"custom" }))];
+            renderCampusOptions();
+        }, error => {
+            console.error("Campus loading failed:", error);
+            campuses = [{ id: "iter", name: "ITER Campus", type: "iter" }];
+            renderCampusOptions();
+        });
+    });
 
     submitButton.addEventListener("click", async () => {
         const title = document.getElementById("issueTitle").value.trim();
@@ -1272,20 +1307,21 @@
         const floor = selectedFloor?.dataset.floor || null;
         const issueType = selectedIssue?.dataset.issue || null;
 
-        if (!currentUser) return setStatus("Please log in before submitting an issue.", true);
-        if (!selectedCampus) return setStatus("Please select a campus.", true);
-        if (!building) return setStatus("Please select a building.", true);
-        if (!floor) return setStatus("Please select a floor.", true);
-        if (!issueType) return setStatus("Please select an issue type.", true);
-        if (!title || !description) return setStatus("Please enter an issue title and description.", true);
+        if (!currentUser) { setStatus("Please log in before submitting an issue.", true); return; }
+        if (!selectedCampus) { setStatus("Please select a campus.", true); return; }
+        if (!building) { setStatus("Please select a building.", true); return; }
+        if (!floor) { setStatus("Please select a floor.", true); return; }
+        if (!issueType) { setStatus("Please select an issue type.", true); return; }
+        if (!title || !description) { setStatus("Please enter an issue title and description.", true); return; }
 
         submitButton.disabled = true;
         submitButton.textContent = "Submitting…";
         setStatus("Saving your report…");
+
         try {
             await addDoc(collection(db, "reports"), {
                 campusId: selectedCampus.id,
-                campusName: selectedCampus.name,
+                campusName: campusDisplayName(selectedCampus),
                 building,
                 floor,
                 issueType,
